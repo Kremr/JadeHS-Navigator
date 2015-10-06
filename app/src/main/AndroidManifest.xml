@@ -17,8 +17,8 @@
 
         <activity
             android:name="de.jadehs.jadehsnavigator.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:label="@string/app_name">
+            <!--android:screenOrientation="portrait">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,13 +27,13 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="Einstellungen"
-            android:screenOrientation="portrait">
+            android:label="Einstellungen" >
+            <!--android:screenOrientation="portrait">-->
         </activity>
         <activity
             android:name=".StudiengangActivity"
-            android:label="Studiengang auswählen"
-            android:screenOrientation="portrait">
+            android:label="Studiengang auswählen" >
+            <!--android:screenOrientation="portrait"> -->
         </activity>
         <!-- start gcm_receiver -->
         <!--

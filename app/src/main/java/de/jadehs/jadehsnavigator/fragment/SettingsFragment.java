@@ -40,7 +40,7 @@ import de.jadehs.jadehsnavigator.database.DBHelper;
 import de.jadehs.jadehsnavigator.util.Preferences;
 
 public class SettingsFragment extends PreferenceFragment {
-    final String TAG = "SETTINGSFRAGMENT";
+    final String TAG = "SettingsFragment";
 
     private DBHelper dbHelper;
     private Preferences preferences;
@@ -92,7 +92,6 @@ public class SettingsFragment extends PreferenceFragment {
 
                                                 // set setup done flag
                                                 preferences.save("setupDone", true);
-
 
                                                 // Nachricht wird eingeblendet, dass
                                                 // alle Daten gelöscht wurden

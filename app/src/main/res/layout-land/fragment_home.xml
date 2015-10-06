@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:layout_width="177dp"
+            android:layout_height="65dp"
+            android:text="@string/txtHomepage"
+            android:id="@+id/btnHomepage"
+            android:layout_row="9"
+            android:layout_column="0"
+            android:textColor="#ffffff"
+            android:backgroundTint="@color/jadehs_red"
+            android:background="@color/jadehs_red"
+            android:layout_margin="0.5dp"
+            android:layout_marginLeft="1dp"
+            android:elegantTextHeight="true" />
+
+        <Button
+            android:layout_width="177dp"
+            android:layout_height="65dp"
+            android:text="@string/txtMoodle"
+            android:id="@+id/btnMoodle"
+            android:layout_row="9"
+            android:layout_column="2"
+            android:textColor="#ffffff"
+            android:backgroundTint="@color/jadehs_red"
+            android:background="@color/jadehs_red"
+            android:layout_marginRight="1dp"
+            android:layout_margin="0.5dp"
+            android:elegantTextHeight="true" />
+
+        <Button
+            android:layout_width="177dp"
+            android:layout_height="65dp"
+            android:text="@string/txtECampus"
+            android:id="@+id/btnECampus"
+            android:layout_row="10"
+            android:layout_column="0"
+            android:textColor="#ffffff"
+            android:backgroundTint="@color/jadehs_red"
+            android:background="@color/jadehs_red"
+            android:layout_margin="0.5dp"
+            android:layout_marginLeft="1dp"
+            android:elegantTextHeight="true" />
+
+        <Button
+            android:layout_width="177dp"
+            android:layout_height="65dp"
+            android:text="@string/txtOWA"
+            android:id="@+id/btnOWA"
+            android:layout_row="10"
+            android:layout_column="2"
+            android:textColor="#ffffff"
+            android:backgroundTint="@color/jadehs_red"
+            android:background="@color/jadehs_red"
+            android:layout_marginRight="1dp"
+            android:layout_margin="0.5dp"
+            android:elegantTextHeight="true" />
+
+        <Button
+            android:layout_width="177dp"
+            android:layout_height="65dp"
+            android:text="@string/txtGuide"
+            android:id="@+id/btnGuide"
+            android:layout_row="11"
+            android:layout_column="0"
+            android:textColor="#ffffff"
+            android:backgroundTint="@color/jadehs_red"
+            android:background="@color/jadehs_red"
+            android:layout_margin="0.5dp"
+            android:layout_marginLeft="1dp"
+            android:elegantTextHeight="true" />
+
+        <Button
+            android:layout_width="177dp"
+            android:layout_height="65dp"
+            android:text="@string/txtOwncloud"
+            android:id="@+id/btnOwncloud"
+            android:layout_row="11"
+            android:layout_column="2"
+            android:textColor="#ffffff"
+            android:backgroundTint="@color/jadehs_red"
+            android:background="@color/jadehs_red"
+            android:layout_marginRight="1dp"
+            android:layout_margin="0.5dp"
+            android:elegantTextHeight="true" />
+
+    </GridLayout>
+
+</RelativeLayout>

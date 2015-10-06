@@ -41,6 +41,7 @@ import de.jadehs.jadehsnavigator.util.Preferences;
  * Created by Nico on 14.08.2015.
  */
 public class StudiengangFragment extends Fragment implements StudiengangAsyncResponse {
+    private final String TAG = "StudiengangFragment";
 
     private ConnectivityManager connectivityManager;
     private NetworkInfo activeNetwork;
@@ -63,17 +64,21 @@ public class StudiengangFragment extends Fragment implements StudiengangAsyncRes
 
     @Override
     public void processFinishedStudiengang(ArrayList<StudiengangItem> studiengangItems) {
-        if(studiengangItems != null) {
-            Log.wtf("ASYNC", "ASYNC TASK FINISHED");
+        try {
+            if (studiengangItems != null) {
+                Log.wtf("ASYNC", "ASYNC TASK FINISHED");
 
-            ListView lv = (ListView) getActivity().findViewById(R.id.list_studiengang);
+                ListView lv = (ListView) getActivity().findViewById(R.id.list_studiengang);
 
-            StudiengangAdapter studiengangAdapter = new StudiengangAdapter(getActivity(), studiengangItems);
+                StudiengangAdapter studiengangAdapter = new StudiengangAdapter(getActivity(), studiengangItems);
 
-            lv.setAdapter(studiengangAdapter);
-        }else{
-            Log.wtf("Fragment", "is null");
-            Toast.makeText(getActivity().getApplicationContext(), "Keine Studiengänge gefunden! Bitte versuche es später erneut!", Toast.LENGTH_LONG).show();
+                lv.setAdapter(studiengangAdapter);
+            } else {
+                Log.wtf("Fragment", "is null");
+                Toast.makeText(getActivity().getApplicationContext(), "Keine Studiengänge gefunden! Bitte versuche es später erneut!", Toast.LENGTH_LONG).show();
+            }
+        }catch (Exception ex){
+            Log.wtf(TAG, "Err", ex);
         }
     }
 

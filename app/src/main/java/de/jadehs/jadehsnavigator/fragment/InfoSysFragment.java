@@ -31,15 +31,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Locale;
 
 import de.jadehs.jadehsnavigator.R;
 import de.jadehs.jadehsnavigator.adapter.InfoSysItemAdapter;
@@ -189,8 +184,6 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
 
                 lv.setAdapter(adapter);
                 //swipeLayout.setRefreshing(false);
-            }else{
-                Toast.makeText(getActivity(), "Fehler beim Aktualisieren",Toast.LENGTH_LONG).show();
             }
         }catch (Exception ex){
             Log.wtf(TAG,"ERROR",ex);

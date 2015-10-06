@@ -56,7 +56,6 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
     private NetworkInfo activeNetwork;
     private ParseVPlanTask vPlanTask;
     private Preferences preferences;
-    private VPlanItemDataSource datasource;
 
     private String studiengangID = "";
     private String url;
@@ -200,8 +199,6 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
 
     public void getVPlanFromDB() {
         /*
-
-
         try {
             // Datenquelle öffnen und Einträge aufrufen
             this.datasource = new VPlanItemDataSource(getActivity().getApplicationContext());

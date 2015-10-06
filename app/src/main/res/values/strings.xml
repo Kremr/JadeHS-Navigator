@@ -265,7 +265,7 @@
     <string name="txtOwncloud">Owncloud</string>
 
     <!-- extern urls -->
-    <string name="extHomepage">https://www.jade-hs.de</string>
+    <string name="extHomepage">http://m.jade-hs.de</string>
     <string name="extMoodle">https://moodle.jade-hs.de/moodle/login/index.php</string>
     <string name="extECampus">https://ecampus.jade-hs.de/qisserver/pages/cs/sys/portal/hisinoneStartPage.faces?chco=y</string>
     <string name="extOWA">https://webmail.jade-hs.de/</string>
