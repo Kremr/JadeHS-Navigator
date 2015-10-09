@@ -2,9 +2,10 @@
 
 [![Join the chat at https://gitter.im/Ekrow/JadeHS-Navigator](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ekrow/JadeHS-Navigator?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Der JadeHS-Navigator ist ein studentisches Open-Source-Projekt aus dem Fachbereich MIT der Jade Hochschule und ist kostenlos im Play Store verfügbar: https://play.google.com/store/apps/details?id=de.jadehs.jadehsnavigator
+Der JadeHS-Navigator ist ein studentisches Open-Source-Projekt aus dem Fachbereich MIT der Jade Hochschule und ist kostenlos im [Play Store](https://goo.gl/NYWTW2) verfügbar.
 
-Die App befindet sich noch im Beta-Status und wird fortlaufend entwickelt. Kontaktiere rene.spengel@jade-hs.de für weitere Informationen zur direkten Mitarbeit.
+Die App befindet sich noch im Beta-Status und wird fortlaufend entwickelt. Kontaktiere rene.spengel@jade-hs.de für weitere Informationen zur direkten Mitarbeit oder hinterlasse eine Nachricht im [Gitter-Chat](goo.gl/M8iMWe)
+
 
 Natürlich sind auch unabhängige Änderungen per GitHub erwünscht und erlaubt! 
 
