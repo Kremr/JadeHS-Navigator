@@ -34,3 +34,5 @@ Wenn du das JadeHS-Navigator Projekt unterstützen möchtest, gehe bitte folgend
 
 Der JadeHS-Navigator steht unter der  GNU LESSER GENERAL PUBLIC LICENSE v3 mehr dazu in LICENSE
 
+
+
