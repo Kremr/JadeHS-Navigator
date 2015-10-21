@@ -177,6 +177,10 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
     public void updateVPlan() {
         try {
 
+            // SharedPreference auslesen
+            SharedPreferences sp = getActivity().getSharedPreferences("JHSNAV_PREFS", Context.MODE_PRIVATE);
+            this.studiengangID = sp.getString("StudiengangID", "");
+
             this.connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             this.activeNetwork = connectivityManager.getActiveNetworkInfo();
             this.preferences = new Preferences(getActivity().getApplicationContext());
