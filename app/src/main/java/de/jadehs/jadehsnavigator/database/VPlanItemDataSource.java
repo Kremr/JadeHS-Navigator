@@ -38,7 +38,7 @@ public class VPlanItemDataSource {
             dbHelper.COLUMN_VPLAN_PROF, dbHelper.COLUMN_VPLAN_ROOM,
             dbHelper.COLUMN_VPLAN_START, dbHelper.COLUMN_VPLAN_END,
             dbHelper.COLUMN_VPLAN_DAY_OF_WEEK, dbHelper.COLUMN_VPLAN_STUDIENGANG_ID,
-            dbHelper.COLUMN_VPLAN_FB};
+            dbHelper.COLUMN_VPLAN_FB, dbHelper.COLUMN_VPLAN_WEEK_OF_YEAR};
 
     public final String DB_TABLE = dbHelper.TABLE_VPLANITEMS;
 
@@ -55,7 +55,14 @@ public class VPlanItemDataSource {
     }
 
     public void createVPlanItem(VPlanItem vPlanItem) {
-        if (!this.exists(dbHelper.COLUMN_VPLAN_TITLE, vPlanItem.getModulName())) {
+        //if (!this.exists(dbHelper.COLUMN_VPLAN_TITLE, vPlanItem.getModulName()))
+        if (!this.existsDetail(dbHelper.COLUMN_VPLAN_TITLE, vPlanItem.getModulName(),
+                dbHelper.COLUMN_VPLAN_ROOM, vPlanItem.getRoom(),
+                dbHelper.COLUMN_VPLAN_START, vPlanItem.getStartTime(),
+                dbHelper.COLUMN_VPLAN_END, vPlanItem.getEndTime(),
+                dbHelper.COLUMN_VPLAN_DAY_OF_WEEK, vPlanItem.getDayOfWeek(),
+                dbHelper.COLUMN_VPLAN_WEEK_OF_YEAR, vPlanItem.getWeekOfYear())) {
+
             ContentValues values = new ContentValues();
 
             // Werte einsetzen
@@ -67,6 +74,7 @@ public class VPlanItemDataSource {
             values.put(dbHelper.COLUMN_VPLAN_DAY_OF_WEEK, vPlanItem.getDayOfWeek());
             values.put(dbHelper.COLUMN_VPLAN_STUDIENGANG_ID, vPlanItem.getStudiengangID());
             values.put(dbHelper.COLUMN_VPLAN_FB, vPlanItem.getFb());
+            values.put(dbHelper.COLUMN_VPLAN_WEEK_OF_YEAR, vPlanItem.getWeekOfYear());
 
             this.database.insert(dbHelper.TABLE_VPLANITEMS, null, values);
         } else {
@@ -74,43 +82,32 @@ public class VPlanItemDataSource {
         }
     }
 
+
     public void deleteVPlanItem(VPlanItem vPlanItem) {
         long id = vPlanItem.getId();
         this.database.delete(dbHelper.TABLE_VPLANITEMS, dbHelper.COLUMN_VPLAN_ID + " = " + id, null);
     }
 
-    public ArrayList<VPlanItem> getAllVPlanItems() {
-        ArrayList<VPlanItem> vPlanItems = new ArrayList<VPlanItem>();
+    public boolean existsDetail(String fieldName, String fieldValue,
+                                String fieldRoom, String valueRoom,
+                                String fieldStart, String valueStart,
+                                String fieldEnd, String valueEnd,
+                                String fieldDayOfWeek, String valueDayOfWeek,
+                                String fieldWeekOfYear, String valueWeekOfYear) {
+        String Query = "Select * from " + this.DB_TABLE + " where " + fieldName + " = '" + fieldValue + "' and "
+                + fieldRoom + " = '" + valueRoom + "' and "
+                + fieldStart + " = '" + valueStart + "' and "
+                + fieldEnd + " = '" + valueEnd + "' and "
+                + fieldDayOfWeek + " = '" + valueDayOfWeek + "' and "
+                + fieldWeekOfYear + " = '" + valueWeekOfYear + "'";
 
-        Cursor cursor = database.query(dbHelper.TABLE_VPLANITEMS, allColumns, null, null, null, null, null);
-        cursor.moveToFirst();
-
-        while (!cursor.isAfterLast()) {
-            VPlanItem vPlanItem = cursorToVPlanItem(cursor);
-            vPlanItems.add(vPlanItem);
-            cursor.moveToNext();
+        Cursor cursor = this.database.rawQuery(Query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
         }
-
         cursor.close();
-        return vPlanItems;
-    }
-
-    public ArrayList<VPlanItem> getVPlanItemFromStudiengang(String studiengang) {
-        ArrayList<VPlanItem> vPlanItems = new ArrayList<VPlanItem>();
-
-        Cursor cursor = database.query(dbHelper.TABLE_VPLANITEMS, allColumns, null, null, null, null, null);
-        cursor.moveToFirst();
-
-        while (!cursor.isAfterLast()) {
-            VPlanItem vPlanItem = cursorToVPlanItem(cursor);
-            if (vPlanItem.getStudiengangID().equals(studiengang)) {
-                vPlanItems.add(vPlanItem);
-            }
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return vPlanItems;
+        return true;
     }
 
     public boolean exists(String fieldName, String fieldValue) {
@@ -124,6 +121,25 @@ public class VPlanItemDataSource {
         return true;
     }
 
+    public ArrayList<VPlanItem> getVPlanItem(String studiengang, String weekOfYear) {
+        ArrayList<VPlanItem> vPlanItems = new ArrayList<VPlanItem>();
+
+        Cursor cursor = database.query(dbHelper.TABLE_VPLANITEMS, allColumns, null, null, null, null, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            VPlanItem vPlanItem = cursorToVPlanItem(cursor);
+            if (vPlanItem.getStudiengangID().equals(studiengang) && vPlanItem.getWeekOfYear().equals(weekOfYear)) {
+                vPlanItems.add(vPlanItem);
+            }
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return vPlanItems;
+    }
+
+
     private VPlanItem cursorToVPlanItem(Cursor cursor) {
         VPlanItem vPlanItem = new VPlanItem();
 
@@ -136,6 +152,7 @@ public class VPlanItemDataSource {
         vPlanItem.setDayOfWeek(cursor.getString(6));
         vPlanItem.setStudiengangID(cursor.getString(7));
         vPlanItem.setFb(cursor.getInt(8));
+        vPlanItem.setWeekOfYear(cursor.getString(9));
 
         return vPlanItem;
     }

@@ -81,6 +81,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_VPLAN_DAY_OF_WEEK = "weekday";
     public static final String COLUMN_VPLAN_STUDIENGANG_ID = "studiengangid";
     public static final String COLUMN_VPLAN_FB = "fb";
+    public static final String COLUMN_VPLAN_WEEK_OF_YEAR = "week";
 
 
     // News
@@ -121,7 +122,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + COLUMN_VPLAN_END + " text not null, "
             + COLUMN_VPLAN_DAY_OF_WEEK + " text not null, "
             + COLUMN_VPLAN_STUDIENGANG_ID + " text not null, "
-            + COLUMN_VPLAN_FB + " text not null);";
+            + COLUMN_VPLAN_FB + " text not null, "
+            + COLUMN_VPLAN_WEEK_OF_YEAR + " text not null);";
 
     // News
     // rssItem = new RSSItem(title, description, link, origin, dateStr);

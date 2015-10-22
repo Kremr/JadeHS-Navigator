@@ -32,12 +32,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.NumberPicker;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import de.jadehs.jadehsnavigator.R;
 import de.jadehs.jadehsnavigator.adapter.VPlanPagerAdapter;
@@ -105,8 +102,8 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
                 //this.weekOfYear = calendarHelper.getWeekNumber();
                 //setCurrentWeekNumber();
                 // LADE AKTUELLEN VPLAN
-                updateVPlan();
-                //getVPlanFromDB();
+                //updateVPlan();
+                getVPlanFromDB();
             } else {
                 //Toast.makeText(getActivity().getApplicationContext(), "Bitte wähle einen Studiengang in den Einstellungen aus!", Toast.LENGTH_LONG).show();
                 // zeige fehler overlay
@@ -185,12 +182,12 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
             this.activeNetwork = connectivityManager.getActiveNetworkInfo();
             this.preferences = new Preferences(getActivity().getApplicationContext());
 
-            url = this.preferences.getVPlanURL() + studiengangID + "&weeks=" + weekOfYear + "&days=";
+            url = this.preferences.getVPlanURL() + this.studiengangID + "&weeks=" + this.weekOfYear + "&days=";
 
             boolean isConnected = (activeNetwork != null) && activeNetwork.isConnectedOrConnecting();
 
             if (isConnected) {
-                this.vPlanTask = new ParseVPlanTask(getActivity(), this.url, this.preferences.getFB());
+                this.vPlanTask = new ParseVPlanTask(getActivity(), this.url, this.preferences.getFB(), this.weekOfYear);
                 this.vPlanTask.delegate = this;
                 this.vPlanTask.execute();
             } else {
@@ -203,8 +200,6 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
     }
 
     public void getVPlanFromDB() {
-        /*
-
 
         try {
             // Datenquelle öffnen und Einträge aufrufen
@@ -213,14 +208,15 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
 
             // SharedPreference auslesen
             SharedPreferences sp = getActivity().getSharedPreferences("JHSNAV_PREFS", Context.MODE_PRIVATE);
-            String studiengang = sp.getString("StudiengangID", "");
+            this.studiengangID = sp.getString("StudiengangID", "");
 
-            ArrayList<VPlanItem> vPlanItems = this.datasource.getVPlanItemFromStudiengang(studiengang);
+            ArrayList<VPlanItem> vPlanItems = this.datasource.getVPlanItem(this.studiengangID, this.weekOfYear);
 
             if (!vPlanItems.isEmpty()) {
-                VPlanPagerAdapter vPlanPagerAdapter = new VPlanPagerAdapter(getActivity(), vPlanItems, weekOfYear);
+                VPlanPagerAdapter vPlanPagerAdapter = new VPlanPagerAdapter(getActivity(), vPlanItems, this.weekOfYear);
                 viewpager = (ViewPager) getActivity().findViewById(R.id.vplan_viewpager);
                 viewpager.setAdapter(vPlanPagerAdapter);
+                viewpager.setCurrentItem(calendarHelper.getDay());
 
                 vPlanTabLayout = (VPlanTabLayout) getActivity().findViewById(R.id.vplan_sliding_tabs);
                 vPlanTabLayout.setmViewPager(viewpager);
@@ -232,7 +228,6 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
         } catch (Exception e) {
             e.printStackTrace();
         }
-        */
         getActivity().findViewById(R.id.vplan_semester).setVisibility(View.GONE);
         getActivity().findViewById(R.id.progressVPlan).setVisibility(View.GONE);
     }

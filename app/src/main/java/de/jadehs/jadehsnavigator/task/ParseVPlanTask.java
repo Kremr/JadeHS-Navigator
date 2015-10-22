@@ -34,18 +34,20 @@ public class ParseVPlanTask extends AsyncTask<Void, Void, ArrayList<VPlanItem>> 
     private Activity activity = null;
     private String url = null;
     private int fb;
+    private String weekOfYear;
     private VPlan vPlan = null;
 
-    public ParseVPlanTask(Activity activity, String url, int fb) {
+    public ParseVPlanTask(Activity activity, String url, int fb, String weekOfYear) {
         this.activity = activity;
         this.url = url;
         this.fb = fb;
+        this.weekOfYear = weekOfYear;
     }
 
     @Override
     protected ArrayList<VPlanItem> doInBackground(Void... params) {
 
-        this.vPlan = new VPlan(this.activity.getApplicationContext(), url, fb);
+        this.vPlan = new VPlan(this.activity.getApplicationContext(), this.url, this.fb, this.weekOfYear);
         ArrayList<VPlanItem> vPlanItems = this.vPlan.parseVPlan();
 
         return vPlanItems;

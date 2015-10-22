@@ -42,11 +42,13 @@ public class VPlan {
 
     private String url;
     private int fb;
+    private String weekOfYear;
 
-    public VPlan(Context context, String url, int fb) {
+    public VPlan(Context context, String url, int fb, String weekOfYear) {
         this.context = context;
         this.url = url;
         this.fb = fb;
+        this.weekOfYear = weekOfYear;
     }
 
     public ArrayList<VPlanItem> parseVPlan() {
@@ -137,7 +139,7 @@ public class VPlan {
                         SharedPreferences sp = context.getSharedPreferences("JHSNAV_PREFS", Context.MODE_PRIVATE);
                         String studiengangID = sp.getString("StudiengangID", "");
 
-                        vPlanItem = new VPlanItem(title, prof, room, start, end, weekday, studiengangID, this.fb);
+                        vPlanItem = new VPlanItem(title, prof, room, start, end, weekday, studiengangID, this.fb, this.weekOfYear);
 
                         vPlanItemDataSource.createVPlanItem(vPlanItem);
                         this.vPlanItems.add(vPlanItem);
