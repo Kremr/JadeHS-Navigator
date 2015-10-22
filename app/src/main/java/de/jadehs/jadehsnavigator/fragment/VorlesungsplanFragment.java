@@ -242,7 +242,8 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
              * Ermitteln des heutigen Wochentages, damit auf entsprechenden Tab gewechselt werden kann
              */
             viewpager.setAdapter(vPlanPagerAdapter);
-            viewpager.setCurrentItem(calendarHelper.getDay());
+            if (calendarHelper.getWeekNumber() == Integer.parseInt(weekOfYear))
+                viewpager.setCurrentItem(calendarHelper.getDay());
 
             vPlanTabLayout = (VPlanTabLayout) getActivity().findViewById(R.id.vplan_sliding_tabs);
             vPlanTabLayout.setmViewPager(viewpager);
