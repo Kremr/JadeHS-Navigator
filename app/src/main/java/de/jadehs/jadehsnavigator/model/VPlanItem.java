@@ -26,6 +26,7 @@ public class VPlanItem {
     private String endTime;
     private String dayOfWeek;
     private String studiengangID;
+    private String weekOfYear;
 
     private int fb;
 
@@ -38,7 +39,7 @@ public class VPlanItem {
                      String endTime,
                      String dayOfWeek,
                      String studiengangID,
-                     int fb) {
+                     int fb, String weekOfYear) {
 
         this.modulName = modulName;
         this.profName = profName;
@@ -48,27 +49,7 @@ public class VPlanItem {
         this.dayOfWeek = dayOfWeek;
         this.studiengangID = studiengangID;
         this.fb = fb;
-    }
-
-    public VPlanItem(long id,
-                     String modulName,
-                     String profName,
-                     String room,
-                     String startTime,
-                     String endTime,
-                     String dayOfWeek,
-                     String studiengangID,
-                     int fb) {
-
-        this.id = id;
-        this.modulName = modulName;
-        this.profName = profName;
-        this.room = room;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.dayOfWeek = dayOfWeek;
-        this.studiengangID = studiengangID;
-        this.fb = fb;
+        this.weekOfYear = weekOfYear;
     }
 
     public long getId() {
@@ -141,5 +122,13 @@ public class VPlanItem {
 
     public void setFb(int fb) {
         this.fb = fb;
+    }
+
+    public String getWeekOfYear() {
+        return weekOfYear;
+    }
+
+    public void setWeekOfYear(String weekOfYear) {
+        this.weekOfYear = weekOfYear;
     }
 }
