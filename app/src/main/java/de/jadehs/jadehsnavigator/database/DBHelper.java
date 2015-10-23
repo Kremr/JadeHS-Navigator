@@ -36,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Version der Datenbank
      */
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
 
     /**
      * Tables
