@@ -99,7 +99,8 @@ public class InfoSysItemDataSource {
     public ArrayList<InfoSysItem>  getInfoSysItemsFromFB(int fb){
         ArrayList<InfoSysItem> infoSysItems = new ArrayList<InfoSysItem>();
 
-        Cursor cursor = database.query(dbHelper.TABLE_INFOSYSITEMS, allColumns, null, null, null, null, null);
+        // limit the database query to max 15 entries sorted by the creation date
+        Cursor cursor = database.query(dbHelper.TABLE_INFOSYSITEMS, allColumns, null, null, null, null,"created DESC", "15");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             InfoSysItem infoSysItem = cursorToInfoSysItem(cursor);

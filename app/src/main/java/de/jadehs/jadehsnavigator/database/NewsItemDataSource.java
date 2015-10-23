@@ -85,7 +85,8 @@ public class NewsItemDataSource {
     public ArrayList<RSSItem> getAllRSSItems(){
         ArrayList<RSSItem> rssItems = new ArrayList<RSSItem>();
 
-        Cursor cursor = database.query(DB_TABLE, allColumns, null, null, null, null, null);
+        // limit the entries by 200
+        Cursor cursor = database.query(DB_TABLE, allColumns, null, null, null, null, "created DESC", "200");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             RSSItem rssItem = cursorToRSSItem(cursor);

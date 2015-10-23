@@ -33,8 +33,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import de.jadehs.jadehsnavigator.R;
 import de.jadehs.jadehsnavigator.adapter.InfoSysItemAdapter;
@@ -79,6 +77,7 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
         Log.wtf(TAG, "View created!");
         super.onViewCreated(view, savedInstanceState);
 
+        /* Set up a Refreshlistener on the swipelayout*/
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -107,6 +106,9 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
         return false;
     }
 
+    /**
+     * Initial load of the InfoSys. This will try to load a number of InfoSys entries
+     */
     public void initializeInfoSys(){
         Log.wtf(TAG, "Starting initializeInfoSys");
         try{
@@ -115,13 +117,6 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
             this.datasource = new InfoSysItemDataSource(getActivity().getApplicationContext());
             this.datasource.open();
             ArrayList<InfoSysItem> infoSysItems = this.datasource.getInfoSysItemsFromFB(this.preferences.getFB());
-
-            Collections.sort(infoSysItems, new Comparator<InfoSysItem>() {
-                @Override
-                public int compare(InfoSysItem lhs, InfoSysItem rhs) {
-                    return rhs.getCreated().compareTo(lhs.getCreated());
-                }
-            });
 
             processFinish(infoSysItems); // create View
 
@@ -139,6 +134,11 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
         updateInfoSys(false);
     }
 
+    /**
+     * Updates the view for this fragment if a internet connection is available
+     *
+     * @param isSwipeRefresh
+     */
     public void updateInfoSys(boolean isSwipeRefresh) {
         Log.wtf(TAG, "Starting updateInfoSys");
         this.preferences = new Preferences(getActivity().getApplicationContext());
@@ -151,6 +151,8 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
         if(isConnected) {
             try {
                 txtLastUpdate.setText("Letzte Aktualisierung: " + calendarHelper.getDateRightNow(true));
+
+                /* launches an asynchronus task that will fetch all infosys items for the current department */
                 this.asyncTask = new ParseInfoSysTask(getActivity(), this.preferences.getInfoSysURL(), this.preferences.getFB(), isSwipeRefresh);
                 this.asyncTask.delegate = this;
                 this.asyncTask.execute();
@@ -179,11 +181,9 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
             if(items.size() > 0) {
                 ListView lv = (ListView) getActivity().findViewById(R.id.listInfoSys);
 
-                //getActivity().findViewById(R.id.progressInfoSys).setVisibility(View.GONE); // Hides loading icon
                 InfoSysItemAdapter adapter = new InfoSysItemAdapter(getActivity(), items);
 
                 lv.setAdapter(adapter);
-                //swipeLayout.setRefreshing(false);
             }
         }catch (Exception ex){
             Log.wtf(TAG,"ERROR",ex);

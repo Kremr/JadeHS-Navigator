@@ -147,6 +147,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(DATABASE_VPLANITEMS);
         // added in version 2
         db.execSQL(DATABASE_NEWSITEMS);
+        // added in version 3
+        
     }
 
     @Override

@@ -227,7 +227,6 @@ public class Mensaplan  {
             doc = Jsoup.connect(url).timeout(5000).get();
         } catch (SocketTimeoutException ex){
             Log.wtf("Connection:", "Timeout.",ex);
-            Toast.makeText(this.context,"Connection timed out!",Toast.LENGTH_LONG).show();
         } catch (IOException ex) {
             Log.wtf("Connection:", "Fehler beim verbinden zur Website.",ex);
         }
