@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 22
@@ -9,8 +9,8 @@ android {
         applicationId "de.jadehs.jadehsnavigator"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 8
-        versionName "0.4.3"
+        versionCode 9
+        versionName "0.4.4"
     }
     buildTypes {
         release {
