@@ -4,7 +4,7 @@
 
 Der JadeHS-Navigator ist ein studentisches Open-Source-Projekt aus dem Fachbereich MIT der Jade Hochschule und ist kostenlos im [Play Store](https://goo.gl/NYWTW2) verfügbar.
 
-Die App befindet sich noch im Beta-Status und wird fortlaufend entwickelt. Kontaktiere rene.spengel@jade-hs.de für weitere Informationen zur direkten Mitarbeit oder hinterlasse eine Nachricht im [Gitter-Chat](goo.gl/M8iMWe)
+Die App befindet sich noch im Beta-Status und wird fortlaufend entwickelt. Kontaktiere rene.spengel@jade-hs.de für weitere Informationen zur direkten Mitarbeit oder hinterlasse eine Nachricht im [Gitter-Chat](https://goo.gl/M8iMWe)
 
 
 Natürlich sind auch unabhängige Änderungen per GitHub erwünscht und erlaubt! 
