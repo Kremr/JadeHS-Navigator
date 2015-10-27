@@ -45,6 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLE_MENSAPLANDAY = "mensaplanday";
     public static final String TABLE_MENSAPLANMEAL = "mensaplanmeal";
     public static final String TABLE_VPLANITEMS = "vplan";
+    public static final String TABLE_CUSTOM_VPLAN = "customvplan";
     public static final String TABLE_NEWS = "newsitems";
 
     /**
@@ -82,6 +83,17 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_VPLAN_STUDIENGANG_ID = "studiengangid";
     public static final String COLUMN_VPLAN_FB = "fb";
     public static final String COLUMN_VPLAN_WEEK_OF_YEAR = "week";
+
+    // Custom VPlan
+    public static final String COLUMN_CUSTOM_VPLAN_ID = "_id";
+    public static final String COLUMN_CUSTOM_VPLAN_START = "start";
+    public static final String COLUMN_CUSTOM_VPLAN_END = "end";
+    public static final String COLUMN_CUSTOM_VPLAN_TITLE = "titel";
+    public static final String COLUMN_CUSTOM_VPLAN_PROF = "prof";
+    public static final String COLUMN_CUSTOM_VPLAN_ROOM = "room";
+    public static final String COLUMN_CUSTOM_VPLAN_DAY_OF_WEEK = "weekday";
+    public static final String COLUMN_CUSTOM_VPLAN_STUDIENGANG_ID = "studiengangid";
+    public static final String COLUMN_CUSTOM_VPLAN_FB = "fb";
 
 
     // News
@@ -125,6 +137,17 @@ public class DBHelper extends SQLiteOpenHelper {
             + COLUMN_VPLAN_FB + " text not null, "
             + COLUMN_VPLAN_WEEK_OF_YEAR + " text not null);";
 
+    // Custom VPlan
+    private static final String DATABASE_CUSTOM_VPLAN = "create table " + TABLE_CUSTOM_VPLAN + " (" + COLUMN_CUSTOM_VPLAN_ID + " integer primary key autoincrement, "
+            + COLUMN_CUSTOM_VPLAN_TITLE + " text not null, "
+            + COLUMN_CUSTOM_VPLAN_PROF + " text not null, "
+            + COLUMN_CUSTOM_VPLAN_ROOM + " text not null, "
+            + COLUMN_CUSTOM_VPLAN_START + " text not null, "
+            + COLUMN_CUSTOM_VPLAN_END + " text not null, "
+            + COLUMN_CUSTOM_VPLAN_DAY_OF_WEEK + " text not null, "
+            + COLUMN_CUSTOM_VPLAN_STUDIENGANG_ID + " text not null, "
+            + COLUMN_CUSTOM_VPLAN_FB + " text not null);";
+
     // News
     // rssItem = new RSSItem(title, description, link, origin, dateStr);
     private static final String DATABASE_NEWSITEMS = "create table if not exists " + TABLE_NEWS + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -147,6 +170,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(DATABASE_MENSAPLANDAY);
         db.execSQL(DATABASE_MENSAPLANMEAL);
         db.execSQL(DATABASE_VPLANITEMS);
+        db.execSQL(DATABASE_CUSTOM_VPLAN);
         // added in version 2
         db.execSQL(DATABASE_NEWSITEMS);
         // added in version 3

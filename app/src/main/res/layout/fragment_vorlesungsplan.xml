@@ -79,6 +79,20 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/empty_custom_vplan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Bitte füge Vorlesungen zu deinem Vorlesungsplan hinzu." />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/vplan_semester"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

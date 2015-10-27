@@ -79,4 +79,8 @@ public class VPlanAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+    public ArrayList<VPlanItem> getvPlanItems() {
+        return vPlanItems;
+    }
 }

@@ -32,12 +32,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.nineoldandroids.view.ViewHelper;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import de.jadehs.jadehsnavigator.R;
+import de.jadehs.jadehsnavigator.adapter.VPlanAdapter;
 import de.jadehs.jadehsnavigator.adapter.VPlanPagerAdapter;
+import de.jadehs.jadehsnavigator.database.CustomVPlanDataSource;
 import de.jadehs.jadehsnavigator.database.VPlanItemDataSource;
 import de.jadehs.jadehsnavigator.model.VPlanItem;
 import de.jadehs.jadehsnavigator.response.VPlanAsyncResponse;
@@ -54,6 +63,7 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
     private ParseVPlanTask vPlanTask;
     private Preferences preferences;
     private VPlanItemDataSource datasource;
+    private CustomVPlanDataSource custom_vplan_datasource;
 
     private String studiengangID = "";
     private String url;
@@ -62,7 +72,6 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
     private ViewPager viewpager;
     private VPlanTabLayout vPlanTabLayout;
     private CalendarHelper calendarHelper = new CalendarHelper();
-
 
     // Konstruktor
     public VorlesungsplanFragment() {
@@ -90,28 +99,41 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
             super.onViewCreated(view, savedInstanceState);
 
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("JHSNAV_PREFS", Context.MODE_PRIVATE);
-
             this.studiengangID = sharedPreferences.getString("StudiengangID", "");
-
             Log.i("STUDIENGANG", studiengangID);
+            this.preferences = new Preferences(getActivity().getApplicationContext());
 
             setCurrentWeekNumber();
 
             if (studiengangID.startsWith("%")) {
-                //this.weekOfYear = new SimpleDateFormat("w").format(new java.util.Date()).toString();
-                //this.weekOfYear = calendarHelper.getWeekNumber();
-                //setCurrentWeekNumber();
-                // LADE AKTUELLEN VPLAN
-                //updateVPlan();
                 getVPlanFromDB();
             } else {
-                //Toast.makeText(getActivity().getApplicationContext(), "Bitte wähle einen Studiengang in den Einstellungen aus!", Toast.LENGTH_LONG).show();
-                // zeige fehler overlay
                 getActivity().findViewById(R.id.progressVPlan).setVisibility(View.GONE);
                 getActivity().findViewById(R.id.empty_sg).setVisibility(View.VISIBLE);
             }
         }catch (Exception ex){
             Log.wtf("VPlan", "Err", ex);
+        }
+
+        if (!this.preferences.getBoolean("vplan_instructions_read", false)) {
+
+            try {
+                this.preferences.save("vplan_instructions_read", true);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                builder.setMessage("Durch einen langen Klick fügst du eine Vorlesung deinem eigenen Vorlesungsplan hinzu.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } catch (Exception ex) {
+                Log.wtf("EXXX", "EX", ex);
+            }
         }
     }
 
@@ -167,6 +189,29 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
             */
             case R.id.refresh_vplan:
                 updateVPlan();
+                break;
+
+            case R.id.show_custom_vplan:
+                if (!item.isChecked()) {
+                    getCustomVPlan();
+                    item.setChecked(true);
+                    item.setIcon(android.R.drawable.btn_star_big_on);
+
+                    ListView lv = (ListView) getView().findViewById(R.id.list_studiengang);
+                    VPlanAdapter vPlanAdapter = (VPlanAdapter) lv.getAdapter();
+
+                    Toast.makeText(getActivity().getApplicationContext(), "Eigenen Vorlesungsplan ausgewählt.", Toast.LENGTH_LONG);
+
+                } else {
+                    getVPlanFromDB();
+                    item.setChecked(false);
+                    getActivity().findViewById(R.id.empty_custom_vplan).setVisibility(View.GONE);
+                    item.setIcon(android.R.drawable.btn_star_big_off);
+
+                    ListView lv = (ListView) getView().findViewById(R.id.list_studiengang);
+                    VPlanAdapter vPlanAdapter = (VPlanAdapter) lv.getAdapter();
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -213,6 +258,7 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
 
             if (!vPlanItems.isEmpty()) {
                 VPlanPagerAdapter vPlanPagerAdapter = new VPlanPagerAdapter(getActivity(), vPlanItems, this.weekOfYear);
+                vPlanPagerAdapter.setIsCustomVPlanShown(false);
                 viewpager = (ViewPager) getActivity().findViewById(R.id.vplan_viewpager);
                 viewpager.setAdapter(vPlanPagerAdapter);
                 viewpager.setCurrentItem(calendarHelper.getDay());
@@ -227,7 +273,64 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
         } catch (Exception e) {
             e.printStackTrace();
         }
-        getActivity().findViewById(R.id.vplan_semester).setVisibility(View.GONE);
+        //getActivity().findViewById(R.id.vplan_semester).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.progressVPlan).setVisibility(View.GONE);
+    }
+
+    public void getCustomVPlan() {
+        try {
+            // Datenquelle öffnen und Einträge aufrufen
+            this.custom_vplan_datasource = new CustomVPlanDataSource(getActivity().getApplicationContext());
+            this.custom_vplan_datasource.open();
+
+            ArrayList<VPlanItem> vPlanItems = this.custom_vplan_datasource.getAllCustomVPlanItems();
+
+            Collections.sort(vPlanItems, new Comparator<VPlanItem>() {
+                @Override
+                public int compare(VPlanItem lhs, VPlanItem rhs) {
+                    return lhs.getStartTime().compareTo(rhs.getStartTime());
+                }
+            });
+
+            if (!vPlanItems.isEmpty()) {
+                VPlanPagerAdapter vPlanPagerAdapter = new VPlanPagerAdapter(getActivity(), vPlanItems, this.weekOfYear);
+                vPlanPagerAdapter.setIsCustomVPlanShown(true);
+                viewpager = (ViewPager) getActivity().findViewById(R.id.vplan_viewpager);
+                viewpager.setAdapter(vPlanPagerAdapter);
+                viewpager.setCurrentItem(calendarHelper.getDay());
+
+                vPlanTabLayout = (VPlanTabLayout) getActivity().findViewById(R.id.vplan_sliding_tabs);
+                vPlanTabLayout.setmViewPager(viewpager);
+
+                this.custom_vplan_datasource.close();
+            } else
+                getActivity().findViewById(R.id.empty_custom_vplan).setVisibility(View.VISIBLE);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (!this.preferences.getBoolean("custom_vplan_instructions_read", false)) {
+
+            try {
+                this.preferences.save("custom_vplan_instructions_read", true);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                builder.setMessage("Durch einen langen Klick kannst du eine Vorlesung aus deinem Vorlesungsplan entfernen.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } catch (Exception ex) {
+                Log.wtf("EXXX", "EX", ex);
+            }
+        }
+        //getActivity().findViewById(R.id.vplan_semester).setVisibility(View.GONE);
         getActivity().findViewById(R.id.progressVPlan).setVisibility(View.GONE);
     }
 
@@ -236,6 +339,7 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
         Log.wtf("ASYNC", "ASYNC TASK FINISHED");
         try {
             VPlanPagerAdapter vPlanPagerAdapter = new VPlanPagerAdapter(getActivity(), vPlanItems, weekOfYear);
+            vPlanPagerAdapter.setIsCustomVPlanShown(false);
             viewpager = (ViewPager) getActivity().findViewById(R.id.vplan_viewpager);
             /**
              * Ermitteln des heutigen Wochentages, damit auf entsprechenden Tab gewechselt werden kann

@@ -16,19 +16,26 @@
  */
 package de.jadehs.jadehsnavigator.adapter;
 
+import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.nio.channels.CancelledKeyException;
 import java.util.ArrayList;
 
 import de.jadehs.jadehsnavigator.R;
+import de.jadehs.jadehsnavigator.database.CustomVPlanDataSource;
+import de.jadehs.jadehsnavigator.fragment.VorlesungsplanFragment;
 import de.jadehs.jadehsnavigator.model.VPlanItem;
 import de.jadehs.jadehsnavigator.util.CalendarHelper;
 
@@ -42,6 +49,7 @@ public class VPlanPagerAdapter extends PagerAdapter {
     private ArrayList<VPlanItem> vPlanItems;
     private CalendarHelper calendarHelper = new CalendarHelper();
     private String kw;
+    private boolean isCustomVPlanShown = false;
 
     public VPlanPagerAdapter(Context context, ArrayList<VPlanItem> vPlanItems, String kw) {
         this.context = context;
@@ -87,12 +95,12 @@ public class VPlanPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
 
         LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View view = null;
 
-        ArrayList<VPlanItem> vPlanItemsWeekday = new ArrayList<VPlanItem>();
+        final ArrayList<VPlanItem> vPlanItemsWeekday = new ArrayList<VPlanItem>();
 
         if (getPageTitle(position).equals(context.getString(R.string.strWeekdayMonday))) {
             for (VPlanItem item : this.vPlanItems) {
@@ -138,9 +146,55 @@ public class VPlanPagerAdapter extends PagerAdapter {
 
         lastUpdateVPlan.setText("Plan für KW: " + this.kw + "  |  Abgerufen am: " + calendarHelper.getDateRightNow(true));
 
-        VPlanAdapter vPlanAdapter = new VPlanAdapter(context, vPlanItemsWeekday);
+        final VPlanAdapter vPlanAdapter = new VPlanAdapter(context, vPlanItemsWeekday);
 
         lv.setAdapter(vPlanAdapter);
+        lv.setLongClickable(true);
+
+        // if(!vPlanAdapter.isCustomVPlanShown()) {
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if (!isCustomVPlanShown) {
+                    VPlanItem vPlanItem = new VPlanItem(vPlanItemsWeekday.get(position).getModulName(),
+                            vPlanItemsWeekday.get(position).getProfName(),
+                            vPlanItemsWeekday.get(position).getRoom(),
+                            vPlanItemsWeekday.get(position).getStartTime(),
+                            vPlanItemsWeekday.get(position).getEndTime(),
+                            vPlanItemsWeekday.get(position).getDayOfWeek(),
+                            vPlanItemsWeekday.get(position).getStudiengangID(),
+                            vPlanItemsWeekday.get(position).getFb(),
+                            vPlanItemsWeekday.get(position).getWeekOfYear());
+
+                    try {
+                        CustomVPlanDataSource customVPlanDataSource = new CustomVPlanDataSource(context);
+                        customVPlanDataSource.open();
+
+                        customVPlanDataSource.createCustomVPlanItem(vPlanItem);
+                        customVPlanDataSource.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(context, "Zu eigenem Vorlesungsplan hinzugefügt!", Toast.LENGTH_LONG).show();
+                } else {
+                    VPlanItem vPlanItem = vPlanItemsWeekday.get(position);
+
+                    try {
+                        CustomVPlanDataSource customVPlanDataSource = new CustomVPlanDataSource(context);
+                        customVPlanDataSource.open();
+
+                        customVPlanDataSource.deleteCustomVPlanItem(vPlanItem);
+                        customVPlanDataSource.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(context, "Aus eigenem Vorlesungsplan entfernt!", Toast.LENGTH_LONG).show();
+                }
+                return true;
+            }
+        });
 
         //lastUpdateMensa.setText("Plan für KW: " + mensaplanDays.get(position).getWeekNumber() + "  |  Abgerufen am: " + mensaplanDays.get(position).getCreated());
 
@@ -150,5 +204,13 @@ public class VPlanPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+    }
+
+    public boolean isCustomVPlanShown() {
+        return isCustomVPlanShown;
+    }
+
+    public void setIsCustomVPlanShown(boolean isCustomVPlanShown) {
+        this.isCustomVPlanShown = isCustomVPlanShown;
     }
 }
