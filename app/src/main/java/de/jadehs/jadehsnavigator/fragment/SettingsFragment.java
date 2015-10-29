@@ -242,6 +242,32 @@ public class SettingsFragment extends PreferenceFragment {
                 }
             });
 
+            final Preference changelog = findPreference("changelog");
+
+            changelog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    try {
+                        builder.setTitle(getString(R.string.changelog));
+
+                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View layout = inflater.inflate(R.layout.alert_dialog, null);
+
+                        TextView text = (TextView) layout.findViewById(R.id.text);
+                        text.setMovementMethod(LinkMovementMethod.getInstance());
+                        text.setText(Html.fromHtml(getActivity().getResources().getString(R.string.changelog_text)));
+
+                        builder.setView(layout);
+
+                        final AlertDialog alert = builder.show();
+                    } catch (Exception ex) {
+                        Log.wtf("PREFERENCE LICENSE", "ERROR", ex);
+                        return false;
+                    }
+                    return true;
+                }
+            });
+
             final Preference version = findPreference("version");
             version.setSummary("Version: " + getString(R.string.version));
             version.setSelectable(false);
