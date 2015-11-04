@@ -188,13 +188,13 @@ public class VPlanPagerAdapter extends PagerAdapter {
                         CustomVPlanDataSource customVPlanDataSource = new CustomVPlanDataSource(context);
                         customVPlanDataSource.open();
 
-
                         customVPlanDataSource.deleteCustomVPlanItem(vPlanItem);
                         customVPlanDataSource.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     parent.getChildAt(position).setBackgroundResource(R.color.jadehs_grey_muffled);
+                    parent.getChildAt(position).setLongClickable(false);
                     Toast.makeText(context, "Aus eigenem Vorlesungsplan entfernt!", Toast.LENGTH_LONG).show();
                 }
                 return true;
