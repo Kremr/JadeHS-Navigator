@@ -19,6 +19,7 @@ package de.jadehs.jadehsnavigator.adapter;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -144,7 +145,10 @@ public class VPlanPagerAdapter extends PagerAdapter {
         ListView lv = (ListView) view.findViewById(R.id.list_studiengang);
         TextView lastUpdateVPlan = (TextView) view.findViewById(R.id.textViewFooter);
 
-        lastUpdateVPlan.setText("Plan für KW: " + this.kw + "  |  Abgerufen am: " + calendarHelper.getDateRightNow(true));
+        if (!isCustomVPlanShown)
+            lastUpdateVPlan.setText("Plan für KW: " + this.kw + "  |  Abgerufen am: " + calendarHelper.getDateRightNow(true));
+        else
+            lastUpdateVPlan.setText("Eigener Vorlesungsplan");
 
         final VPlanAdapter vPlanAdapter = new VPlanAdapter(context, vPlanItemsWeekday);
 
@@ -176,7 +180,6 @@ public class VPlanPagerAdapter extends PagerAdapter {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                     Toast.makeText(context, "Zu eigenem Vorlesungsplan hinzugefügt!", Toast.LENGTH_LONG).show();
                 } else {
                     VPlanItem vPlanItem = vPlanItemsWeekday.get(position);
@@ -185,11 +188,13 @@ public class VPlanPagerAdapter extends PagerAdapter {
                         CustomVPlanDataSource customVPlanDataSource = new CustomVPlanDataSource(context);
                         customVPlanDataSource.open();
 
+
                         customVPlanDataSource.deleteCustomVPlanItem(vPlanItem);
                         customVPlanDataSource.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    parent.getChildAt(position).setBackgroundResource(R.color.jadehs_grey_muffled);
                     Toast.makeText(context, "Aus eigenem Vorlesungsplan entfernt!", Toast.LENGTH_LONG).show();
                 }
                 return true;
