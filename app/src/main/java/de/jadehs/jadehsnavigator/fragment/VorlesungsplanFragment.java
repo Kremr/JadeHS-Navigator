@@ -153,6 +153,7 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
 
         switch (item.getItemId()) {
             case R.id.change_kw_vplan:
+                //
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Kalenderwoche wählen:");
 
