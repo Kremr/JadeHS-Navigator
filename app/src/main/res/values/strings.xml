@@ -185,6 +185,9 @@
     <string name="strWeekdayFriday">FR</string>
     <string name="strWeekdaySaturday">SA</string>
     <string name="str_empty_vplan">Es konnten keine Vorlesungen gefunden werden, bitte aktualisiere den Vorlesungsplan.</string>
+    <string name="custom_vplan">Eigener Vorlesungsplan</string>
+    <string name="added_to_vplan">Zu eigenem Vorlesungsplan hinzugefügt!</string>
+    <string name="removed_from_vplan">Aus eigenem Vorlesungsplan entfernt!</string>
 
     <!-- MENSA -->
     <string name="titleHauptgericht">Hauptgerichte</string>

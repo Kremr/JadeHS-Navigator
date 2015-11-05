@@ -17,6 +17,7 @@
     <color name="counter_text_bg">#626262</color>
     <color name="counter_text_color">#c5c4c4</color>
 
+    <color name="white">#ffffff</color>
     <color name="swipe_color_1">#8c000e</color>
     <color name="swipe_color_2">#12cc01</color>
     <color name="swipe_color_3">#0010bd</color>

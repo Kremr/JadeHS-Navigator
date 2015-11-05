@@ -36,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Version der Datenbank
      */
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
 
     /**
      * Tables
@@ -170,11 +170,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(DATABASE_MENSAPLANDAY);
         db.execSQL(DATABASE_MENSAPLANMEAL);
         db.execSQL(DATABASE_VPLANITEMS);
-        db.execSQL(DATABASE_CUSTOM_VPLAN);
         // added in version 2
         db.execSQL(DATABASE_NEWSITEMS);
-        // added in version 3
-        
+        // added in version 4
+        db.execSQL(DATABASE_CUSTOM_VPLAN);
     }
 
     @Override
@@ -188,6 +187,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 break;
             case 3:
                 Log.wtf("DBHelper", "Upgrade to third version. Reset all tables");
+                reset();
+                break;
+            case 4:
+                Log.wtf("DBHelper", "Upgrade to fourth version. Reset all tables");
                 reset();
                 break;
             default:
