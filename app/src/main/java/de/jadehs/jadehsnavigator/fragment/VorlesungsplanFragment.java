@@ -64,6 +64,8 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
     private Preferences preferences;
     private VPlanItemDataSource datasource;
     private CustomVPlanDataSource custom_vplan_datasource;
+    private boolean isCustomVPlanShown;
+    private Menu menu;
 
     private String studiengangID = "";
     private String url;
@@ -139,10 +141,13 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Log.wtf(TAG, "Created");
         if (menu != null) {
             // Eimstellungen aus dem Menü entfernen
             menu.findItem(R.id.action_settings).setVisible(false);
         }
+
+        this.menu = menu;
 
         inflater.inflate(R.menu.fragment_vorlesungsplan, menu);
 
@@ -166,6 +171,8 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //setWeekOfYear(strings[which]);
+                        setCustomVPlanShown(false);
+                        switchVPlanSymbol();
                         if (studiengangID.startsWith("%")) {
                             setCurrentWeekNumber(which + 1);
                             updateVPlan();
@@ -176,45 +183,40 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
 
                 builder.show();
                 break;
-            /*
-            case R.id.show_semester:
-                getActivity().findViewById(R.id.vplan_semester).setVisibility(View.VISIBLE);
-                /*int currentWeek = Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date()));
-                if (currentWeek < 34)
-                    this.weekOfYear = "1-33";
-                else
-                    this.weekOfYear = "34-52";
-                updateVPlan();
-                setCurrentWeekNumber();
-                break;
-            */
             case R.id.refresh_vplan:
+                this.isCustomVPlanShown = false;
+
                 updateVPlan();
                 break;
 
             case R.id.show_custom_vplan:
-                if (!item.isChecked()) {
-                    getCustomVPlan();
-                    item.setChecked(true);
-                    item.setIcon(android.R.drawable.btn_star_big_on);
+                try {
+                    if (!item.isChecked()) {
+                        this.isCustomVPlanShown = true;
+                        getCustomVPlan();
 
-                    ListView lv = (ListView) getView().findViewById(R.id.list_studiengang);
-                    VPlanAdapter vPlanAdapter = (VPlanAdapter) lv.getAdapter();
+                        //ListView lv = (ListView) getView().findViewById(R.id.list_studiengang);
+                        //VPlanAdapter vPlanAdapter = (VPlanAdapter) lv.getAdapter();
 
-                    Toast.makeText(getActivity().getApplicationContext(), "Eigenen Vorlesungsplan ausgewählt.", Toast.LENGTH_LONG);
+                        Toast.makeText(getActivity().getApplicationContext(), "Eigenen Vorlesungsplan ausgewählt.", Toast.LENGTH_LONG);
 
-                } else {
-                    getVPlanFromDB();
-                    item.setChecked(false);
-                    getActivity().findViewById(R.id.empty_custom_vplan).setVisibility(View.GONE);
-                    item.setIcon(android.R.drawable.btn_star_big_off);
+                    } else {
+                        this.isCustomVPlanShown = false;
+                        getVPlanFromDB();
+                        getActivity().findViewById(R.id.empty_custom_vplan).setVisibility(View.GONE);
 
-                    ListView lv = (ListView) getView().findViewById(R.id.list_studiengang);
-                    VPlanAdapter vPlanAdapter = (VPlanAdapter) lv.getAdapter();
+                        //ListView lv = (ListView) getView().findViewById(R.id.list_studiengang);
+                        //VPlanAdapter vPlanAdapter = (VPlanAdapter) lv.getAdapter();
+                    }
+                    break;
+                }catch (Exception ex){
+                    Log.wtf(TAG, "Err", ex);
                 }
-                break;
         }
+        switchVPlanSymbol();
+
         return super.onOptionsItemSelected(item);
+
     }
 
     public void updateVPlan() {
@@ -263,6 +265,7 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
                 viewpager = (ViewPager) getActivity().findViewById(R.id.vplan_viewpager);
                 viewpager.setAdapter(vPlanPagerAdapter);
                 viewpager.setCurrentItem(calendarHelper.getDay());
+                viewpager.setOffscreenPageLimit(5);
 
                 vPlanTabLayout = (VPlanTabLayout) getActivity().findViewById(R.id.vplan_sliding_tabs);
                 vPlanTabLayout.setmViewPager(viewpager);
@@ -335,6 +338,17 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
         getActivity().findViewById(R.id.progressVPlan).setVisibility(View.GONE);
     }
 
+    public void switchVPlanSymbol(){
+        MenuItem vplanItem = menu.findItem(R.id.show_custom_vplan);
+        if(this.isCustomVPlanShown){
+            vplanItem.setChecked(true);
+            vplanItem.setIcon(android.R.drawable.btn_star_big_on);
+        }else{
+            vplanItem.setChecked(false);
+            vplanItem.setIcon(android.R.drawable.btn_star_big_off);
+        }
+    }
+
     @Override
     public void processFinished(ArrayList<VPlanItem> vPlanItems) {
         Log.wtf("ASYNC", "ASYNC TASK FINISHED");
@@ -375,6 +389,10 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
         //this.weekOfYear = new SimpleDateFormat("w").format(new java.util.Date()).toString();
         this.weekOfYear = ""+which;
         Log.wtf("weekOfYear", this.weekOfYear);
+    }
+
+    public void setCustomVPlanShown(boolean isCustomVPlanShown){
+        this.isCustomVPlanShown = isCustomVPlanShown;
     }
 
     public String getWeekOfYear() {
