@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="version">0.5-internal-pre-alpha-build-42-</string>
+    <string name="version">0.5</string>
 
     <string name="app_name">JadeHS-Navigator</string>
 
@@ -110,15 +110,10 @@
     <string name="changelog_text">
         <![CDATA[
             <h1>Changelog</h1><br /><br />
-            <b>v0.5</b>
-            <ul>
-                <li>Eigener Vorlesungsplan</li>
-            </ul>
+            <b>v0.5</b><br /><br />
+            <p>- Eigener Vorlesungsplan</p>
+            <p>- Lagepläne für Oldenburg und Elsfleth</p>
             <br><br>
-            <b>v0.4.4</b>
-            <ul>
-                <li>Einiges</li>
-            </ul>
         ]]>
     </string>
 

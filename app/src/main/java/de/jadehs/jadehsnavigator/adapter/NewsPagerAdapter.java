@@ -38,12 +38,15 @@ public class NewsPagerAdapter extends PagerAdapter {
 
     private Context context;
     private static final int NUM_OF_TABS = 5;
+    private CalendarHelper calendarHelper;
 
     private ArrayList<RSSItem> rssItems;
 
     public NewsPagerAdapter(Context context, ArrayList<RSSItem> rssItems) {
         this.context = context;
         this.rssItems = rssItems;
+
+        calendarHelper = new CalendarHelper();
     }
 
 
@@ -131,7 +134,7 @@ public class NewsPagerAdapter extends PagerAdapter {
 
         TextView lastUpdateVPlan = (TextView) view.findViewById(R.id.textViewFooter);
 
-        lastUpdateVPlan.setText("Update");
+        lastUpdateVPlan.setText("Abgerufen am: " + calendarHelper.getDateRightNow(true));
 
         return view;
     }

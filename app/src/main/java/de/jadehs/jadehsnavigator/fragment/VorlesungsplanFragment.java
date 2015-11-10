@@ -141,7 +141,6 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.wtf(TAG, "Created");
         if (menu != null) {
             // Eimstellungen aus dem Menü entfernen
             menu.findItem(R.id.action_settings).setVisible(false);
@@ -197,9 +196,6 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
 
                         //ListView lv = (ListView) getView().findViewById(R.id.list_studiengang);
                         //VPlanAdapter vPlanAdapter = (VPlanAdapter) lv.getAdapter();
-
-                        Toast.makeText(getActivity().getApplicationContext(), "Eigenen Vorlesungsplan ausgewählt.", Toast.LENGTH_LONG);
-
                     } else {
                         this.isCustomVPlanShown = false;
                         getVPlanFromDB();

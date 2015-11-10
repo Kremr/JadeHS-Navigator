@@ -150,8 +150,6 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         if(isConnected) {
             try {
-                txtLastUpdate.setText("Letzte Aktualisierung: " + calendarHelper.getDateRightNow(true));
-
                 /* launches an asynchronus task that will fetch all infosys items for the current department */
                 this.asyncTask = new ParseInfoSysTask(getActivity(), this.preferences.getInfoSysURL(), this.preferences.getFB(), isSwipeRefresh);
                 this.asyncTask.delegate = this;
@@ -185,6 +183,8 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
 
                 lv.setAdapter(adapter);
             }
+            TextView txtLastUpdate = (TextView) getActivity().findViewById(R.id.txtLastUpdate);
+            txtLastUpdate.setText("Letzte Aktualisierung: " + calendarHelper.getDateRightNow(true));
         }catch (Exception ex){
             Log.wtf(TAG,"ERROR",ex);
         }

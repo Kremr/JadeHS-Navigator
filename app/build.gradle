@@ -9,7 +9,7 @@ android {
         applicationId "de.jadehs.jadehsnavigator"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 10
+        versionCode 11
         versionName "0.5"
     }
     buildTypes {

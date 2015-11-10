@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -34,6 +35,7 @@ import java.io.InputStream;
 import de.jadehs.jadehsnavigator.R;
 import de.jadehs.jadehsnavigator.util.Preferences;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
+import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 
 /**
  * Created by re1015 on 18.08.2015.
@@ -60,12 +62,32 @@ public class MapFragment extends Fragment {
             matrix.postScale((float)2,(float)2);
 
             this.preferences = new Preferences(getActivity());
-            if(!this.preferences.getLocation().equals(getActivity().getString(R.string.bez_WHV))) {
-                Toast.makeText(getActivity(), "Pläne für Oldenburg und Elsfleth sind in Arbeit und werden nachgereicht", Toast.LENGTH_LONG).show();
+            Bitmap bitmap;
+            if (this.preferences.getLocation().equals(getActivity().getString(R.string.bez_OLB))){
+                bitmap = getBitmapFromAsset("images/plan_oldb.png");
+            }else if(this.preferences.getLocation().equals(getActivity().getString(R.string.bez_WHV))){
+                bitmap = getBitmapFromAsset("images/plan_whv.png");
+            }else{
+                bitmap = getBitmapFromAsset("images/plan_els.png");
             }
 
-            Bitmap bitmap = getBitmapFromAsset("images/plan_whv.png");
+            // show image
             mapImage.setImageBitmap(bitmap, matrix, 1, 3);
+
+            if(this.preferences.getLocation().equals(getActivity().getString(R.string.bez_ELS))) {
+
+                getActivity().findViewById(R.id.btncontrol).setVisibility(View.VISIBLE);
+                Button btnOverview = (Button) getActivity().findViewById(R.id.btn_overview);
+                Button btn1 = (Button) getActivity().findViewById(R.id.btn_1);
+                Button btn2 = (Button) getActivity().findViewById(R.id.btn_2);
+                Button btn3 = (Button) getActivity().findViewById(R.id.btn_3);
+
+                btnOverview.setOnClickListener(new ButtonOnClickListener("images/plan_els.png", matrix));
+                btn1.setOnClickListener(new ButtonOnClickListener("images/plan_els_oben.png", matrix));
+                btn2.setOnClickListener(new ButtonOnClickListener("images/plan_els_mitte.png", matrix));
+                btn3.setOnClickListener(new ButtonOnClickListener("images/plan_els_unten.png", matrix));
+            }
+
         }catch (Exception ex){
             Log.wtf(TAG, "FAILED TO LOAD IMAGE", ex);
         }
@@ -84,5 +106,23 @@ public class MapFragment extends Fragment {
             Log.wtf(TAG, "FAILED TO CREATE BITMAP", ex);
         }
         return bitmap;
+    }
+
+    private class ButtonOnClickListener implements View.OnClickListener {
+        String src;
+        Matrix matrix;
+
+        public ButtonOnClickListener(String src, Matrix matrix) {
+            this.src = src;
+            this.matrix = matrix;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.wtf(TAG, "Button has been clicked!");
+            final ImageViewTouch mapImage = (ImageViewTouch) getActivity().findViewById(R.id.map);
+            Bitmap bitmap = getBitmapFromAsset(this.src);
+            mapImage.setImageBitmap(bitmap, matrix, 1, 3);
+        }
     }
 }

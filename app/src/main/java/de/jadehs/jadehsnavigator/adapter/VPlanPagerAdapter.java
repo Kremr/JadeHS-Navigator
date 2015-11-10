@@ -166,8 +166,6 @@ public class VPlanPagerAdapter extends PagerAdapter {
                         // in normal vplan
                         VPlanItem vPlanItem = vPlanItemsWeekday.get(position);
 
-                        Log.wtf(TAG, "" + parent.getChildAt(position).isActivated());
-
                         if(!parent.getChildAt(position).isActivated()){
                             // item has already been deleted, reverse decision?
                             CustomVPlanDataSource customVPlanDataSource = new CustomVPlanDataSource(context);
@@ -201,8 +199,6 @@ public class VPlanPagerAdapter extends PagerAdapter {
                     try {
                         // in custom vplan
                         VPlanItem vPlanItem = vPlanItemsWeekday.get(position);
-
-                        Log.wtf(TAG, ""+parent.getChildAt(position).isActivated());
 
                         if(!parent.getChildAt(position).isActivated()){
                             // item has not been touched yet, delete it
