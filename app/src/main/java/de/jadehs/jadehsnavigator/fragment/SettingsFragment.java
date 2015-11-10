@@ -198,7 +198,16 @@ public class SettingsFragment extends PreferenceFragment {
                         text.setMovementMethod(LinkMovementMethod.getInstance());
                         text.setText(Html.fromHtml(getActivity().getResources().getString(R.string.license_text)));
 
-                        builder.setView(layout);
+                        builder.setView(layout)
+                                .setPositiveButton(getActivity().getResources().getString(R.string.ok),
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(
+                                                    final DialogInterface dialog,
+                                                    final int id) {
+                                                dialog.dismiss();
+                                            }
+                                        });
 
                         final AlertDialog alert = builder.show();
                     } catch (Exception ex) {
@@ -257,7 +266,16 @@ public class SettingsFragment extends PreferenceFragment {
                         text.setMovementMethod(LinkMovementMethod.getInstance());
                         text.setText(Html.fromHtml(getActivity().getResources().getString(R.string.changelog_text)));
 
-                        builder.setView(layout);
+                        builder.setView(layout)
+                        .setPositiveButton(getActivity().getResources().getString(R.string.ok),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(
+                                            final DialogInterface dialog,
+                                            final int id) {
+                                        dialog.dismiss();
+                                    }
+                                });
 
                         final AlertDialog alert = builder.show();
                     } catch (Exception ex) {
