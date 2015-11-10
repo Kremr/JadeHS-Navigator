@@ -16,19 +16,29 @@
  */
 package de.jadehs.jadehsnavigator.adapter;
 
+import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.nio.channels.CancelledKeyException;
 import java.util.ArrayList;
 
 import de.jadehs.jadehsnavigator.R;
+import de.jadehs.jadehsnavigator.database.CustomVPlanDataSource;
+import de.jadehs.jadehsnavigator.fragment.VorlesungsplanFragment;
 import de.jadehs.jadehsnavigator.model.VPlanItem;
 import de.jadehs.jadehsnavigator.util.CalendarHelper;
 
@@ -38,16 +48,17 @@ import de.jadehs.jadehsnavigator.util.CalendarHelper;
 public class VPlanPagerAdapter extends PagerAdapter {
 
     private static final int NUM_OF_TABS = 6;
+    private static final String TAG = "VPlanPagerAdapter";
     private Context context;
     private ArrayList<VPlanItem> vPlanItems;
     private CalendarHelper calendarHelper = new CalendarHelper();
     private String kw;
+    private boolean isCustomVPlanShown = false;
 
     public VPlanPagerAdapter(Context context, ArrayList<VPlanItem> vPlanItems, String kw) {
         this.context = context;
         this.vPlanItems = vPlanItems;
         this.kw = kw;
-        //int kw = vPlanItems.get(0).get
     }
 
     @Override
@@ -87,12 +98,12 @@ public class VPlanPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
 
         LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View view = null;
 
-        ArrayList<VPlanItem> vPlanItemsWeekday = new ArrayList<VPlanItem>();
+        final ArrayList<VPlanItem> vPlanItemsWeekday = new ArrayList<VPlanItem>();
 
         if (getPageTitle(position).equals(context.getString(R.string.strWeekdayMonday))) {
             for (VPlanItem item : this.vPlanItems) {
@@ -136,13 +147,92 @@ public class VPlanPagerAdapter extends PagerAdapter {
         ListView lv = (ListView) view.findViewById(R.id.list_studiengang);
         TextView lastUpdateVPlan = (TextView) view.findViewById(R.id.textViewFooter);
 
-        lastUpdateVPlan.setText("Plan für KW: " + this.kw + "  |  Abgerufen am: " + calendarHelper.getDateRightNow(true));
+        if (!isCustomVPlanShown)
+            lastUpdateVPlan.setText("Plan für KW: " + this.kw + "  |  Abgerufen am: " + calendarHelper.getDateRightNow(true));
+        else
+            lastUpdateVPlan.setText(context.getString(R.string.custom_vplan));
 
-        VPlanAdapter vPlanAdapter = new VPlanAdapter(context, vPlanItemsWeekday);
+        final VPlanAdapter vPlanAdapter = new VPlanAdapter(context, vPlanItemsWeekday);
 
         lv.setAdapter(vPlanAdapter);
+        lv.setLongClickable(true);
 
-        //lastUpdateMensa.setText("Plan für KW: " + mensaplanDays.get(position).getWeekNumber() + "  |  Abgerufen am: " + mensaplanDays.get(position).getCreated());
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if (!isCustomVPlanShown) {
+                    try {
+                        // in normal vplan
+                        VPlanItem vPlanItem = vPlanItemsWeekday.get(position);
+
+                        if(!parent.getChildAt(position).isActivated()){
+                            // item has already been deleted, reverse decision?
+                            CustomVPlanDataSource customVPlanDataSource = new CustomVPlanDataSource(context);
+                            customVPlanDataSource.open();
+
+                            customVPlanDataSource.createCustomVPlanItem(vPlanItem);
+                            customVPlanDataSource.close();
+
+                            parent.getChildAt(position).setActivated(true);
+
+                            parent.getChildAt(position).setBackgroundResource(R.color.jadehs_grey_muffled);
+                            Toast.makeText(context, context.getString(R.string.added_to_vplan), Toast.LENGTH_LONG).show();
+                        }else{
+                            // item has not been touched yet, delete it
+                            CustomVPlanDataSource customVPlanDataSource = new CustomVPlanDataSource(context);
+                            customVPlanDataSource.open();
+
+                            // remove from custom vplan
+                            customVPlanDataSource.deleteCustomVPlanItem(vPlanItem);
+                            customVPlanDataSource.close();
+
+                            parent.getChildAt(position).setActivated(false);
+
+                            parent.getChildAt(position).setBackgroundResource(R.color.white);
+                            Toast.makeText(context, context.getString(R.string.removed_from_vplan), Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception ex) {
+                        Log.wtf(TAG, "Err", ex);
+                    }
+                } else {
+                    try {
+                        // in custom vplan
+                        VPlanItem vPlanItem = vPlanItemsWeekday.get(position);
+
+                        if(!parent.getChildAt(position).isActivated()){
+                            // item has not been touched yet, delete it
+                            CustomVPlanDataSource customVPlanDataSource = new CustomVPlanDataSource(context);
+                            customVPlanDataSource.open();
+
+                            // remove from custom vplan
+                            customVPlanDataSource.deleteCustomVPlanItem(vPlanItem);
+                            customVPlanDataSource.close();
+
+                            parent.getChildAt(position).setActivated(true);
+
+                            parent.getChildAt(position).setBackgroundResource(R.color.jadehs_grey_muffled);
+                            Toast.makeText(context, context.getString(R.string.removed_from_vplan), Toast.LENGTH_LONG).show();
+                        }else{
+                            // item has already been deleted, reverse decision?
+                            CustomVPlanDataSource customVPlanDataSource = new CustomVPlanDataSource(context);
+                            customVPlanDataSource.open();
+
+                            customVPlanDataSource.createCustomVPlanItem(vPlanItem);
+                            customVPlanDataSource.close();
+
+                            parent.getChildAt(position).setActivated(false);
+
+                            parent.getChildAt(position).setBackgroundResource(R.color.white);
+                            Toast.makeText(context, context.getString(R.string.added_to_vplan), Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception ex) {
+                        Log.wtf(TAG, "Err", ex);
+                    }
+                }
+                return true;
+            }
+        });
 
         return view;
     }
@@ -150,5 +240,13 @@ public class VPlanPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+    }
+
+    public boolean isCustomVPlanShown() {
+        return isCustomVPlanShown;
+    }
+
+    public void setIsCustomVPlanShown(boolean isCustomVPlanShown) {
+        this.isCustomVPlanShown = isCustomVPlanShown;
     }
 }

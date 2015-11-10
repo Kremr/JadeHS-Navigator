@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="version">0.4.4</string>
+    <string name="version">0.5</string>
 
     <string name="app_name">JadeHS-Navigator</string>
 
@@ -107,6 +107,18 @@
         ]]>
     </string>
 
+    <string name="changelog_text">
+        <![CDATA[
+            <h1>Changelog</h1><br /><br />
+            <b>v0.5</b><br /><br />
+            <p>- Der Eigene Vorlesungsplan ist jetzt vorhanden!</p>
+            <p>- Lagepläne für Oldenburg und Elsfleth</p>
+            <p>- Layoutanpassungen für 4 Zoll Geräte</p>
+            <p></p>
+            <br><br>
+        ]]>
+    </string>
+
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
 
@@ -115,8 +127,8 @@
     <string name="primary_options">Studienauswahl</string>
     <string name="more_options">Weitere Optionen</string>
 
-    <string name="choose_fb">Wähle Deinen Fachbereich</string>
-    <string name="choose_sg">Wähle Deinen Studiengang</string>
+    <string name="choose_fb">Wähle deinen Fachbereich</string>
+    <string name="choose_sg">Wähle deinen Studiengang</string>
 
     <string name="preference_reset">Soll die App zurückgesetzt werden?</string>
     <string name="preferences_deleted">App wurde zurückgesetzt</string>
@@ -127,6 +139,7 @@
     <string name="email_subject">Feedback zum JadeHS-Navigator</string>
 
     <string name="licenses">Lizenzen</string>
+    <string name="changelog">Changelog</string>
 
     <string name="send_feedback">Feedback</string>
     <string name="rate_app">App bewerten</string>
@@ -165,7 +178,7 @@
     <string name="ok">OK</string>
     <string name="negative_default">Nein, übernehme Standardeinstellungen</string>
 
-    <string name="alert_firsttimesetup">Willkommen zum JadeHS-Navigator\nDa dies Dein erster Start der App ist, solltest Du ein paar Einstellungen vornehmen, ansonsten werden Standardeinstellungen ausgewählt.\nMöchtest Du diese Einstellungen jetzt vornehmen?</string>
+    <string name="alert_firsttimesetup">Willkommen zum JadeHS-Navigator\nDa dies dein erster Start der App ist, solltest du ein paar Einstellungen vornehmen, ansonsten werden Standardeinstellungen ausgewählt.\nMöchtest du diese Einstellungen jetzt vornehmen?</string>
 
     <string name="failed_to_open_website">Website konnte nicht geöffnet werden</string>
 
@@ -185,6 +198,9 @@
     <string name="strWeekdayFriday">FR</string>
     <string name="strWeekdaySaturday">SA</string>
     <string name="str_empty_vplan">Es konnten keine Vorlesungen gefunden werden, bitte aktualisiere den Vorlesungsplan.</string>
+    <string name="custom_vplan">Eigener Vorlesungsplan</string>
+    <string name="added_to_vplan">Zu eigenem Vorlesungsplan hinzugefügt!</string>
+    <string name="removed_from_vplan">Aus eigenem Vorlesungsplan entfernt!</string>
 
     <!-- MENSA -->
     <string name="titleHauptgericht">Hauptgerichte</string>

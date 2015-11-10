@@ -32,6 +32,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import de.jadehs.jadehsnavigator.adapter.NavDrawerListAdapter;
+import de.jadehs.jadehsnavigator.database.DBHelper;
 import de.jadehs.jadehsnavigator.fragment.AboutFragment;
 import de.jadehs.jadehsnavigator.fragment.HomeFragment;
 import de.jadehs.jadehsnavigator.fragment.InfoSysFragment;
@@ -76,6 +78,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        /***** DATABSE SANITY CHECK ****/
+        try {
+            DBHelper dbHelper = new DBHelper(getApplicationContext());
+            dbHelper.getWritableDatabase();
+        }catch(Exception ex){
+            Log.wtf(TAG, "Err", ex);
+        }
 
         /***** START FIRST TIME SETUP ****/
         Preferences preferences = new Preferences(this);
@@ -183,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
            startService(intent);
        }
        */
+        mDrawerLayout.openDrawer(Gravity.LEFT);
     }
 
     /**

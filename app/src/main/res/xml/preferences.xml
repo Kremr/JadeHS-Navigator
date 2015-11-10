@@ -43,6 +43,9 @@
             android:title="@string/licenses"
             android:key="licenses"/>
         <Preference
+            android:title="@string/changelog"
+            android:key="changelog"/>
+        <Preference
             android:title=""
             android:key="version"/>
     </PreferenceCategory>
