@@ -2,11 +2,53 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\re1015\Documents\GitHub\JadeHS-Navigator\app\libs\jsoup-1.8.3.jar"
+        jar="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\build\intermediates\pre-dexed\debug\classes-17dc35bb73b31c64474d1cb4ae73b4b894e518e9.jar" />
+    </item>
+    <item
+        jar="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\libs\jsoup-1.8.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="3a86e137575e4a45f5a9eec407f8135512e823a2">
-        <dex dex="C:\Users\re1015\Documents\GitHub\JadeHS-Navigator\app\build\intermediates\pre-dexed\release\jsoup-1.8.3-cab93ca2c31b21827529881d1e3061cf60a635ed.jar" />
+        <dex dex="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\build\intermediates\pre-dexed\debug\jsoup-1.8.3-ede3391be3889b6d2a58b79513a4a7e285038132.jar" />
+    </item>
+    <item
+        jar="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\build\intermediates\pre-dexed\debug\classes-bf07a6e4242b0d26f313c4689e0c0e82fd7ba86a.jar" />
+    </item>
+    <item
+        jar="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\build\intermediates\exploded-aar\it.sephiroth.android.library.imagezoom\imagezoom\2.2.2\jars\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0ae6b077aa2e6de9fa3e754e5d55a5efcb43db52">
+        <dex dex="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\build\intermediates\pre-dexed\debug\classes-b7dd5178607523b9bac1f59475ebecd9c8a223c0.jar" />
+    </item>
+    <item
+        jar="C:\Users\akkela\AppData\Local\Android\sdk1\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-cbefb5a4f091b6d4fb855bc29fa323af1b8488f5.jar" />
+    </item>
+    <item
+        jar="C:\Users\akkela\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\build\intermediates\pre-dexed\debug\library-2.4.0-98880b4b7f2c03bc15ae347e6585b0082c17f154.jar" />
+    </item>
+    <item
+        jar="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="D:\java\AndroidStudioProjects\JadeHS-Navigator\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-fa2e88573ad4111ff1937d49aef45a5cb1b6cf1c.jar" />
     </item>
 
 </items>

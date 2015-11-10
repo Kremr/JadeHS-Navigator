@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="#ffffff">
 
@@ -9,34 +9,29 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:src="@drawable/jade_hs_standard"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingLeft="20dp"
-        android:layout_marginTop="40dp" />
+        android:layout_above="@+id/linearLayout3"
+        android:layout_alignParentTop="true" />
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentStart="false"
-        android:layout_below="@+id/imageView"
-        android:columnCount="4"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentEnd="false"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+        android:columnCount="2"
         android:layout_alignWithParentIfMissing="false"
-        android:layout_alignParentTop="false"
-        android:layout_marginBottom="1dp">
+        android:layout_above="@+id/linearLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentRight="true"
+        android:id="@+id/linearLayout3">
 
         <Button
-            android:layout_width="177dp"
+            android:layout_width="match_parent"
             android:layout_height="65dp"
+            android:layout_weight="1"
             android:text="@string/txtHomepage"
             android:id="@+id/btnHomepage"
-            android:layout_row="9"
-            android:layout_column="0"
             android:textColor="#ffffff"
             android:backgroundTint="@color/jadehs_red"
             android:background="@color/jadehs_red"
@@ -45,26 +40,33 @@
             android:elegantTextHeight="true" />
 
         <Button
-            android:layout_width="177dp"
+            android:layout_width="match_parent"
             android:layout_height="65dp"
+            android:layout_weight="1"
             android:text="@string/txtMoodle"
             android:id="@+id/btnMoodle"
-            android:layout_row="9"
-            android:layout_column="2"
             android:textColor="#ffffff"
             android:backgroundTint="@color/jadehs_red"
             android:background="@color/jadehs_red"
             android:layout_marginRight="1dp"
             android:layout_margin="0.5dp"
             android:elegantTextHeight="true" />
-
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_above="@+id/linearLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentRight="true"
+            android:id="@+id/linearLayout2">
         <Button
-            android:layout_width="177dp"
+            android:layout_width="match_parent"
             android:layout_height="65dp"
+            android:layout_weight="1"
             android:text="@string/txtECampus"
             android:id="@+id/btnECampus"
-            android:layout_row="10"
-            android:layout_column="0"
             android:textColor="#ffffff"
             android:backgroundTint="@color/jadehs_red"
             android:background="@color/jadehs_red"
@@ -73,26 +75,32 @@
             android:elegantTextHeight="true" />
 
         <Button
-            android:layout_width="177dp"
+            android:layout_width="match_parent"
             android:layout_height="65dp"
+            android:layout_weight="1"
             android:text="@string/txtOWA"
             android:id="@+id/btnOWA"
-            android:layout_row="10"
-            android:layout_column="2"
             android:textColor="#ffffff"
             android:backgroundTint="@color/jadehs_red"
             android:background="@color/jadehs_red"
             android:layout_marginRight="1dp"
             android:layout_margin="0.5dp"
             android:elegantTextHeight="true" />
-
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/linearLayout">
         <Button
-            android:layout_width="177dp"
+            android:layout_width="match_parent"
             android:layout_height="65dp"
+            android:layout_weight="1"
             android:text="@string/txtGuide"
             android:id="@+id/btnGuide"
-            android:layout_row="11"
-            android:layout_column="0"
             android:textColor="#ffffff"
             android:backgroundTint="@color/jadehs_red"
             android:background="@color/jadehs_red"
@@ -101,12 +109,11 @@
             android:elegantTextHeight="true" />
 
         <Button
-            android:layout_width="177dp"
+            android:layout_width="match_parent"
             android:layout_height="65dp"
+            android:layout_weight="1"
             android:text="@string/txtOwncloud"
             android:id="@+id/btnOwncloud"
-            android:layout_row="11"
-            android:layout_column="2"
             android:textColor="#ffffff"
             android:backgroundTint="@color/jadehs_red"
             android:background="@color/jadehs_red"
@@ -114,6 +121,6 @@
             android:layout_margin="0.5dp"
             android:elegantTextHeight="true" />
 
-    </GridLayout>
+    </LinearLayout>
 
 </RelativeLayout>
