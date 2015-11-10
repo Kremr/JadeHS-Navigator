@@ -738,13 +738,13 @@ header p {
   text-align: center;
 }
 #banner .button:hover {
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffe788), color-stop(100%, #ffe788));
-  background: -webkit-linear-gradient(#ffe788, #ffe788);
-  background: -moz-linear-gradient(#ffe788, #ffe788);
-  background: -o-linear-gradient(#ffe788, #ffe788);
-  background: -ms-linear-gradient(#ffe788, #ffe788);
-  background: linear-gradient(#ffe788, #ffe788);
-  background-color: #ffeca0;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #5B5F57), color-stop(100%, #5B5F57));
+  background: -webkit-linear-gradient(#5B5F57, #5B5F57);
+  background: -moz-linear-gradient(#5B5F57, #5B5F57);
+  background: -o-linear-gradient(#5B5F57, #5B5F57);
+  background: -ms-linear-gradient(#5B5F57, #5B5F57);
+  background: linear-gradient(#5B5F57, #5B5F57);
+  background-color: #5B5F57;
 }
 #banner .fork {
   position: fixed;
@@ -764,7 +764,7 @@ header p {
   float: left;
   line-height: 52px;
   font-size: 90%;
-  color: #FFE788;
+  color: #FFFFFF;
   text-transform: uppercase;
   text-shadow: rgba(255, 255, 255, 0.2) 0 1px 0;
 }
@@ -779,7 +779,7 @@ header p {
   display: inline;
 }
 #banner ul li a.button {
-  background-color: #FFE788;
+  background-color: #5B5F57;
 }
 #banner #logo {
   position: absolute;
