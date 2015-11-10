@@ -119,7 +119,6 @@ public class MapFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Log.wtf(TAG, "Button has been clicked!");
             final ImageViewTouch mapImage = (ImageViewTouch) getActivity().findViewById(R.id.map);
             Bitmap bitmap = getBitmapFromAsset(this.src);
             mapImage.setImageBitmap(bitmap, matrix, 1, 3);
