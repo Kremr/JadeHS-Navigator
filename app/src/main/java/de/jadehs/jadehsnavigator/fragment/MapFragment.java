@@ -61,6 +61,8 @@ public class MapFragment extends Fragment {
             // Set start zoom state
             matrix.postScale((float)2,(float)2);
 
+            matrix = null;
+
             this.preferences = new Preferences(getActivity());
             Bitmap bitmap;
             if (this.preferences.getLocation().equals(getActivity().getString(R.string.bez_OLB))){

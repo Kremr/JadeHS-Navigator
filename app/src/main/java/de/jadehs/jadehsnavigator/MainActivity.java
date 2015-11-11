@@ -87,41 +87,6 @@ public class MainActivity extends AppCompatActivity {
             Log.wtf(TAG, "Err", ex);
         }
 
-        /***** START FIRST TIME SETUP ****/
-        Preferences preferences = new Preferences(this);
-        if(!preferences.getBoolean("setupDone", false)){
-            Log.wtf(TAG, "Setup is not yet done");
-            // don't show this dialog again
-            preferences.save("setupDone", true);
-
-            final AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-            builder.setMessage(getApplicationContext().getString(R.string.alert_firsttimesetup))
-                    .setCancelable(true)
-                    .setPositiveButton(getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            try {
-                                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                                startActivity(intent);
-                            } catch (Exception ex) {
-                                Log.wtf(TAG, "Preference Activity failed", ex);
-                            }
-                        }
-                    })
-                    .setNegativeButton(getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            final AlertDialog alert = builder.create();
-            alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-            alert.show();
-        }else {
-            Log.wtf(TAG, "Setup is already done. Business as usual");
-        }
-        /**** END FIRST TIME SETUP ****/
-
         /**** START GCM INIT ****/
         //@todo: Wird vorerst nicht implementiert, da nicht essentiell und kein Server bereitsteht..
         /*
@@ -193,7 +158,43 @@ public class MainActivity extends AppCompatActivity {
            startService(intent);
        }
        */
-        mDrawerLayout.openDrawer(Gravity.LEFT);
+        /***** START FIRST TIME SETUP ****/
+        Preferences preferences = new Preferences(this);
+        if(!preferences.getBoolean("setupDone", false)){
+            Log.wtf(TAG, "Setup is not yet done");
+            // show the user that there is a drawer menu
+            mDrawerLayout.openDrawer(Gravity.LEFT);
+            // don't show this dialog again
+            preferences.save("setupDone", true);
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+            builder.setMessage(getApplicationContext().getString(R.string.alert_firsttimesetup))
+                    .setCancelable(true)
+                    .setPositiveButton(getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                startActivity(intent);
+                            } catch (Exception ex) {
+                                Log.wtf(TAG, "Preference Activity failed", ex);
+                            }
+                        }
+                    })
+                    .setNegativeButton(getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            alert.show();
+        }else {
+            Log.wtf(TAG, "Setup is already done. Business as usual");
+        }
+        /**** END FIRST TIME SETUP ****/
+
     }
 
     /**
