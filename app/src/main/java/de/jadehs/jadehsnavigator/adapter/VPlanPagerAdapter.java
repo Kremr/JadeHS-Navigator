@@ -152,14 +152,19 @@ public class VPlanPagerAdapter extends PagerAdapter {
         else
             lastUpdateVPlan.setText(context.getString(R.string.custom_vplan));
 
-        final VPlanAdapter vPlanAdapter = new VPlanAdapter(context, vPlanItemsWeekday);
+        final VPlanAdapter vPlanAdapter = new VPlanAdapter(context, vPlanItemsWeekday, isCustomVPlanShown);
 
         lv.setAdapter(vPlanAdapter);
         lv.setLongClickable(true);
 
+        /*
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Integer realPosition = (Integer) view.getTag();
+                Log.wtf(TAG, "POSITION: " + position);
+                Log.wtf(TAG, "ID: " + id);
+                Log.wtf(TAG, "REAL POSITION: " + (Integer) view.getTag());
 
                 if (!isCustomVPlanShown) {
                     try {
@@ -232,7 +237,7 @@ public class VPlanPagerAdapter extends PagerAdapter {
                 }
                 return true;
             }
-        });
+        });*/
 
         return view;
     }

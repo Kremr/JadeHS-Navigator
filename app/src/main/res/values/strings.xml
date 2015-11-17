@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="version">0.5</string>
+    <string name="version">0.5.1</string>
 
     <string name="app_name">JadeHS-Navigator</string>
 
@@ -109,6 +109,10 @@
 
     <string name="changelog_text">
         <![CDATA[
+            <b>v0.5.1</b><br /><br />
+            <p>- Diverse Fehlerbehebungen im Vorlesungsplan</p>
+            <p>- Der eigene Vorlesungsplan kann nun präferiert werden</p>
+            <br><br>
             <h1>Changelog</h1><br /><br />
             <b>v0.5</b><br /><br />
             <p>- Der eigene Vorlesungsplan ist jetzt vorhanden!</p>
@@ -130,7 +134,9 @@
     <string name="choose_sg">Wähle deinen Studiengang</string>
 
     <string name="preference_reset">Soll die App zurückgesetzt werden?</string>
+    <string name="preference_reset_vplan">Soll dein eigener Vorlesungsplan zurückgesetzt werden?</string>
     <string name="preferences_deleted">App wurde zurückgesetzt</string>
+    <string name="preferences_reset_vplan">Vorlesungsplan wurde zurückgesetzt</string>
 
     <string name="default_fb">1</string>
 
@@ -144,7 +150,9 @@
     <string name="rate_app">App bewerten</string>
     <string name="reset_app">App zurücksetzen</string>
     <string name="reset_app_summary">Alle Einstellungen und Datensätze löschen</string>
-
+    <string name="reset_vplan">Vorlesungsplan zurücksetzen</string>
+    <string name="reset_vplan_summary">Eigenen Vorlesungsplan zurücksetzen</string>
+    <string name="summary_prefer_vplan">Zeige den eigenen Vorlesungsplan anstatt den allgemeinen Vorlesungsplan</string>
     <!--- InfoSys Strings -->
     <string name="infosys_base_url">http://team.jade-hs.de/plan/index.php?action=rss&amp;fb=</string>
 

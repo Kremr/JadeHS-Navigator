@@ -129,6 +129,60 @@ public class SettingsFragment extends PreferenceFragment {
             });
 
             /**
+             * Reset Button deklarieren
+             */
+            final Preference resetVplan = findPreference("resetvplan");
+
+            // Reaktion der Betätigung wird programmiert
+            resetVplan.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(final Preference preference) {
+                    try {
+                        // Der Dialog wird erzeugt
+                        builder.setMessage(getString(R.string.preference_reset_vplan))
+                                .setCancelable(true)
+                                        // Positiv-Button wird deklariert
+                                .setPositiveButton(getString(R.string.positive),
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(
+                                                    final DialogInterface dialog,
+                                                    final int id) {
+                                                // Reset Vplan
+                                                dbHelper.resetVplan();
+
+                                                // Nachricht wird eingeblendet, dass
+                                                // alle Daten gelöscht wurden
+                                                Toast.makeText(getActivity().getApplicationContext(),
+                                                        getString(R.string.preferences_reset_vplan),
+                                                        Toast.LENGTH_LONG).show();
+
+                                                // Der Dialog wird geschlossen
+                                                dialog.dismiss();
+
+                                            }
+                                        })
+                                        // Negativ-Button wird deklariert
+                                .setNegativeButton(getString(R.string.negative),
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(
+                                                    final DialogInterface dialog,
+                                                    final int id) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                        final AlertDialog alert = builder.create();
+                        alert.show();
+                        return true;
+                    } catch (Exception ex) {
+                        Log.wtf(TAG, "ERROR", ex);
+                        return false;
+                    }
+                }
+            });
+
+            /**
              * Preference zur Auswahl des Studiengangs
              */
             Preference studiengang = findPreference("studiengang_wahl");

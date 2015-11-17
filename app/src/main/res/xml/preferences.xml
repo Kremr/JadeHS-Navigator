@@ -13,6 +13,13 @@
             android:title="Studiengang"
             android:summary="@string/choose_sg"
             android:key="studiengang_wahl" />
+
+        <CheckBoxPreference
+            android:title="Eigenen Vorlesungsplan bevorzugen"
+            android:summary="@string/summary_prefer_vplan"
+            android:key="prefer_vplan"
+            android:defaultValue="true"
+            />
     </PreferenceCategory>
 <!--
     <PreferenceCategory android:title="RSS Feeds">
@@ -30,6 +37,10 @@
             android:title="@string/reset_app"
             android:summary="@string/reset_app_summary"
             android:key="reset"/>
+        <Preference
+            android:title="@string/reset_vplan"
+            android:summary="@string/reset_vplan_summary"
+            android:key="resetvplan"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Infos">

@@ -208,4 +208,13 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void resetVplan(){
+        // truncate table
+        try {
+            this.getWritableDatabase().execSQL("DELETE FROM " + TABLE_CUSTOM_VPLAN);
+        }catch (Exception ex){
+            Log.wtf("DBHelper", "Err", ex);
+        }
+    }
+
 }

@@ -65,7 +65,6 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
     private VPlanItemDataSource datasource;
     private CustomVPlanDataSource custom_vplan_datasource;
     private boolean isCustomVPlanShown;
-    private Menu menu;
 
     private String studiengangID = "";
     private String url;
@@ -97,9 +96,86 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        try {
-            super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
+    }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (menu != null) {
+            // Eimstellungen aus dem Menü entfernen
+            menu.findItem(R.id.action_settings).setVisible(false);
+        }
+
+        inflater.inflate(R.menu.fragment_vorlesungsplan, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.change_kw_vplan:
+                //
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Kalenderwoche wählen:");
+
+                final String[] strings = new String[52];
+
+                for (int i = 0; i <= 51; i++) {
+                    strings[i] = "" + (i + 1);
+                }
+                builder.setSingleChoiceItems(strings, Integer.parseInt(this.weekOfYear)-1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //setWeekOfYear(strings[which]);
+                        setCustomVPlanShown(false);
+                        //switchVPlanSymbol();
+                        if (studiengangID.startsWith("%")) {
+                            setCurrentWeekNumber(which + 1);
+                            updateVPlan();
+                        }
+                        dialog.dismiss();
+                    }
+                }).create();
+
+                builder.show();
+                break;
+            case R.id.refresh_vplan:
+                this.isCustomVPlanShown = false;
+
+                updateVPlan();
+                break;
+
+            case R.id.show_custom_vplan:
+                try {
+                    if (!isCustomVPlanShown) {
+                        this.isCustomVPlanShown = true;
+                        getCustomVPlan();
+
+                        //ListView lv = (ListView) getView().findViewById(R.id.list_studiengang);
+                        //VPlanAdapter vPlanAdapter = (VPlanAdapter) lv.getAdapter();
+                    } else {
+                        this.isCustomVPlanShown = false;
+                        getVPlanFromDB();
+                        getActivity().findViewById(R.id.empty_custom_vplan).setVisibility(View.GONE);
+
+                        //ListView lv = (ListView) getView().findViewById(R.id.list_studiengang);
+                        //VPlanAdapter vPlanAdapter = (VPlanAdapter) lv.getAdapter();
+                    }
+                    break;
+                }catch (Exception ex){
+                    Log.wtf(TAG, "Err", ex);
+                }
+        }
+        //switchVPlanSymbol();
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("JHSNAV_PREFS", Context.MODE_PRIVATE);
             this.studiengangID = sharedPreferences.getString("StudiengangID", "");
             Log.i("STUDIENGANG", studiengangID);
@@ -108,7 +184,14 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
             setCurrentWeekNumber();
 
             if (studiengangID.startsWith("%")) {
-                getVPlanFromDB();
+                //getVPlanFromDB(); prefer_vplan
+                if(this.preferences.getBoolean("prefer_vplan", true)) {
+                    this.isCustomVPlanShown = true;
+                    getCustomVPlan();
+                }else{
+                    this.isCustomVPlanShown = false;
+                    getVPlanFromDB();
+                }
             } else {
                 getActivity().findViewById(R.id.progressVPlan).setVisibility(View.GONE);
                 getActivity().findViewById(R.id.empty_sg).setVisibility(View.VISIBLE);
@@ -137,82 +220,6 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
                 Log.wtf("EXXX", "EX", ex);
             }
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (menu != null) {
-            // Eimstellungen aus dem Menü entfernen
-            menu.findItem(R.id.action_settings).setVisible(false);
-        }
-
-        this.menu = menu;
-
-        inflater.inflate(R.menu.fragment_vorlesungsplan, menu);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.change_kw_vplan:
-                //
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Kalenderwoche wählen:");
-
-                final String[] strings = new String[52];
-
-                for (int i = 0; i <= 51; i++) {
-                    strings[i] = "" + (i + 1);
-                }
-                builder.setSingleChoiceItems(strings, Integer.parseInt(this.weekOfYear)-1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //setWeekOfYear(strings[which]);
-                        setCustomVPlanShown(false);
-                        switchVPlanSymbol();
-                        if (studiengangID.startsWith("%")) {
-                            setCurrentWeekNumber(which + 1);
-                            updateVPlan();
-                        }
-                        dialog.dismiss();
-                    }
-                }).create();
-
-                builder.show();
-                break;
-            case R.id.refresh_vplan:
-                this.isCustomVPlanShown = false;
-
-                updateVPlan();
-                break;
-
-            case R.id.show_custom_vplan:
-                try {
-                    if (!item.isChecked()) {
-                        this.isCustomVPlanShown = true;
-                        getCustomVPlan();
-
-                        //ListView lv = (ListView) getView().findViewById(R.id.list_studiengang);
-                        //VPlanAdapter vPlanAdapter = (VPlanAdapter) lv.getAdapter();
-                    } else {
-                        this.isCustomVPlanShown = false;
-                        getVPlanFromDB();
-                        getActivity().findViewById(R.id.empty_custom_vplan).setVisibility(View.GONE);
-
-                        //ListView lv = (ListView) getView().findViewById(R.id.list_studiengang);
-                        //VPlanAdapter vPlanAdapter = (VPlanAdapter) lv.getAdapter();
-                    }
-                    break;
-                }catch (Exception ex){
-                    Log.wtf(TAG, "Err", ex);
-                }
-        }
-        switchVPlanSymbol();
-
-        return super.onOptionsItemSelected(item);
-
     }
 
     public void updateVPlan() {
@@ -334,16 +341,18 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
         getActivity().findViewById(R.id.progressVPlan).setVisibility(View.GONE);
     }
 
+    /*
     public void switchVPlanSymbol(){
-        MenuItem vplanItem = menu.findItem(R.id.show_custom_vplan);
+        MenuItem vplanMenuItem = menu.findItem(R.id.show_custom_vplan);
         if(this.isCustomVPlanShown){
-            vplanItem.setChecked(true);
-            vplanItem.setIcon(android.R.drawable.btn_star_big_on);
+            vplanMenuItem.setChecked(true);
+            vplanMenuItem.setIcon(android.R.drawable.btn_star_big_on);
         }else{
-            vplanItem.setChecked(false);
-            vplanItem.setIcon(android.R.drawable.btn_star_big_off);
+            vplanMenuItem.setChecked(false);
+            vplanMenuItem.setIcon(android.R.drawable.btn_star_big_off);
         }
     }
+    */
 
     @Override
     public void processFinished(ArrayList<VPlanItem> vPlanItems) {
