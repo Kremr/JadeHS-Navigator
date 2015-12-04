@@ -37,6 +37,9 @@ import java.util.Locale;
 import de.jadehs.jadehsnavigator.database.InfoSysItemDataSource;
 import de.jadehs.jadehsnavigator.util.CalendarHelper;
 
+/**
+ *
+ */
 public class InfoSys {
     final String TAG = "InfoSys";
 
@@ -56,6 +59,15 @@ public class InfoSys {
         this.calendarHelper= new CalendarHelper();
     }
 
+    /**
+     * Parses the Jade Hochschule InfoSys for entries. If an entry is already in the database
+     * this will create an object for the entry from the database. If not, it will create an object with
+     * the remaining tags (title, date, detailtext, ...).
+     *
+     * Either way it will add it to an ArrayList that will be used in the fragment.
+     *
+     * @return ArrayList ArrayList with all requested entries
+     */
     public ArrayList<InfoSysItem> parse(){
         this.infoSysItems = new ArrayList<InfoSysItem>();
 
@@ -65,25 +77,25 @@ public class InfoSys {
 
             InfoSysItem infoSysItem;
 
+            // connect to the InfoSys URL or timeout after 60 seconds
             Document doc = Jsoup.connect(this.url)
+                    .timeout(6000)
                     .parser(Parser.xmlParser())
                     .get();
-            Log.i("PARSING TAG", "Done Parsing");
 
             for (Element item : doc.select("item")) {
                 String link = item.select("link").first().text();
 
                 if(infoSysItemDataSource.exists("link", link)) {
                     // Parsed entry already exists. Use that one.
-                    //Log.wtf("ITEM", "ITEM: " + link + " ALREADY EXISTS!");
                     infoSysItem = infoSysItemDataSource.loadInfoSysItemByURL(link);
                 }else {
                     // Parsed entry doesn't already exists. Create a new one.
-                    //Log.wtf("ITEM", "ITEM: " + link + " IS NEW!");
                     String title = item.select("title").first().text();
                     String description = item.select("description").first().text();
                     String detailDescription = "";
                     try {
+                        // connect to URL and get details (if any)
                         Document detailDoc = Jsoup.connect(link).parser(Parser.htmlParser()).get();
                         detailDescription = detailDoc.body().getElementsByClass("newstext").get(1).html();
                     } catch (Exception ex) {
@@ -100,21 +112,18 @@ public class InfoSys {
                         date = sdf2.parse(created);
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(date);
-                        // Set date string (oh and btw Calendar.MONTH returns 0-11 for some reason. because there is a 0th month I guess. fucking java)
                         Timestamp timestamp = new Timestamp(cal.getTimeInMillis());
                         dateStr = timestamp.toString();
-
                     } catch (Exception ex) {
                         Log.wtf(TAG, "Err", ex);
                     }
 
+                    // create object save to DB
                     infoSysItem = new InfoSysItem(title, fullDescription, link, creator, dateStr, this.fb);
                     infoSysItemDataSource.createInfoSysItem(infoSysItem);
                 }
 
                 this.infoSysItems.add(infoSysItem);
-
-                Log.wtf(TAG, "ADDED ITEM");
             }
             infoSysItemDataSource.close();
         }catch (IOException e){

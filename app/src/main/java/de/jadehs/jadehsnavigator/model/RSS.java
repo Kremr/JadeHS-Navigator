@@ -63,7 +63,7 @@ public class RSS {
 
 
             for(RSSOrigin origin : this.origins) {
-                Log.wtf("RSS", "PARSING: " + origin.getTitle());
+                Log.wtf(TAG, "PARSING: " + origin.getTitle());
 
                 RSSItem rssItem;
 
@@ -102,14 +102,12 @@ public class RSS {
                         newsItemDataSource.createNewsItem(rssItem);
                     }
                     this.rssItems.add(rssItem);
-
-                    Log.wtf(TAG, "ADDED ITEM");
                     }
                 }
             } catch (HttpStatusException httpEx) {
-                Log.wtf("HTTP ERROR", "SERVER UNREACHABLE", httpEx);
+                Log.wtf(TAG, "SERVER UNREACHABLE", httpEx);
             } catch (Exception ex) {
-                Log.wtf("PARSING ERROR", "PARSING FAILED", ex);
+                Log.wtf(TAG, "PARSING FAILED", ex);
             }
 
         return true;

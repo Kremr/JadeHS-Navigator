@@ -13,14 +13,24 @@
             android:title="Studiengang"
             android:summary="@string/choose_sg"
             android:key="studiengang_wahl" />
-
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/secondary_options">
         <CheckBoxPreference
             android:title="Eigenen Vorlesungsplan bevorzugen"
             android:summary="@string/summary_prefer_vplan"
             android:key="prefer_vplan"
             android:defaultValue="true"
             />
+        <ListPreference
+            android:summary="@string/choose_index"
+            android:title="Startseite"
+            android:key="IndexPreference_list"
+            android:entries="@array/Index_keys"
+            android:entryValues="@array/Index_values"
+            android:defaultValue="1"
+            />
     </PreferenceCategory>
+
 <!--
     <PreferenceCategory android:title="RSS Feeds">
             <MultiSelectListPreference

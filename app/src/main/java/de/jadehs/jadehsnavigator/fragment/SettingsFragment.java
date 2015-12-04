@@ -42,6 +42,9 @@ import de.jadehs.jadehsnavigator.util.Preferences;
 public class SettingsFragment extends PreferenceFragment {
     final String TAG = "SettingsFragment";
 
+    private String[] indexTitles;
+    private String[] fbTitles;
+
     private DBHelper dbHelper;
     private Preferences preferences;
 
@@ -272,32 +275,15 @@ public class SettingsFragment extends PreferenceFragment {
                 }
             });
 
-            //
             final Preference fb = findPreference("FBPreference_list");
-            String fbname = "";
-            switch (preferences.get("FBPreference_list","")){
-                case "1": fbname = "Management, Information, Technologie";break;
-                case "2": fbname = "Ingenieurwissenschaften"; break;
-                case "3": fbname = "Wirtschaft"; break;
-                case "4": fbname = "Architektur"; break;
-                case "5": fbname = "Bauwesen und Geoinformation"; break;
-                case "6": fbname = "Seefahrt"; break;
-            }
-            fb.setSummary(fbname);
+            fbTitles = getResources().getStringArray(R.array.FB_keys);
+            // set summary to responding key
+            fb.setSummary(fbTitles[Integer.parseInt(preferences.get("FBPreference_list", "1")) - 1]);
 
             fb.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    String fbname = "";
-                    switch (newValue.toString()){
-                        case "1": fbname = "Management, Information, Technologie";break;
-                        case "2": fbname = "Ingenieurwissenschaften"; break;
-                        case "3": fbname = "Wirtschaft"; break;
-                        case "4": fbname = "Architektur"; break;
-                        case "5": fbname = "Bauwesen und Geoinformation"; break;
-                        case "6": fbname = "Seefahrt"; break;
-                    }
-                    fb.setSummary(fbname);
+                    fb.setSummary(fbTitles[Integer.parseInt(newValue.toString()) - 1]);
 
                     resetSG();
 
@@ -305,8 +291,21 @@ public class SettingsFragment extends PreferenceFragment {
                 }
             });
 
-            final Preference changelog = findPreference("changelog");
+            final Preference index = findPreference("IndexPreference_list");
+            indexTitles = getResources().getStringArray(R.array.Index_keys);
+            // set summary to responding key
+            index.setSummary(indexTitles[Integer.parseInt(preferences.get("IndexPreference_list", "1"))]);
 
+            index.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    index.setSummary(indexTitles[Integer.parseInt(newValue.toString())]);
+
+                    return true;
+                }
+            });
+
+            final Preference changelog = findPreference("changelog");
             changelog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -356,9 +355,10 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     public void resetSG(){
-        //
+        // delete assoiciation with sg and reset summary texts
         Preference studiengang = findPreference("studiengang_wahl");
         studiengang.setSummary("");
         preferences.save("StudiengangID","Bitte wählen einen Studiengang");
+        preferences.save("StudiengangName", "");
     }
 }

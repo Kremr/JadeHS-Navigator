@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
@@ -112,14 +113,14 @@ public class MainActivity extends AppCompatActivity {
 
         navDrawerItems = new ArrayList<NavDrawerItem>();
 
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1))); //home
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1))); //neuigkeiten
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1))); //infosys
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1))); //vorlesungsplan
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1))); //mensaplan
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1))); //lageplan
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1))); //about
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1))); //settings
+        //navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1))); //home
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1))); //neuigkeiten
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1))); //infosys
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1))); //vorlesungsplan
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1))); //mensaplan
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1))); //lageplan
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1))); //about
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1))); //settings
 
         navMenuIcons.recycle();
 
@@ -145,9 +146,11 @@ public class MainActivity extends AppCompatActivity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+        Preferences preferences = new Preferences(this);
         if (savedInstanceState == null) {
-            //@todo: start w/ infosys
-            displayView(0);
+            //displayView(1);
+            int index = Integer.parseInt(preferences.get("IndexPreference_list", "1"));
+            displayView(index);
         }
 
         /*
@@ -159,13 +162,14 @@ public class MainActivity extends AppCompatActivity {
        }
        */
         /***** START FIRST TIME SETUP ****/
-        Preferences preferences = new Preferences(this);
+
         if(!preferences.getBoolean("setupDone", false)){
             Log.wtf(TAG, "Setup is not yet done");
             // show the user that there is a drawer menu
             mDrawerLayout.openDrawer(Gravity.LEFT);
-            // don't show this dialog again
+            // don't show this dialog again and set the flag to remind of feedback
             preferences.save("setupDone", true);
+            preferences.save("feedbackReminderSeen", false);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
             builder.setMessage(getApplicationContext().getString(R.string.alert_firsttimesetup))
@@ -190,7 +194,33 @@ public class MainActivity extends AppCompatActivity {
             final AlertDialog alert = builder.create();
             alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             alert.show();
-        }else {
+        }else if(preferences.getBoolean("setupDone", false) && !preferences.getBoolean("feedbackReminderSeen", false)){
+            // remind to leave feedback
+            preferences.save("feedbackReminderSeen", true);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+            builder.setMessage(getApplicationContext().getString(R.string.alert_feedbackreminder))
+                    .setCancelable(true)
+                    .setPositiveButton(getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                            } catch (Exception ex) {
+                                Log.wtf(TAG, "Store Activity failed", ex);
+                            }
+                        }
+                    })
+                    .setNegativeButton(getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            alert.show();
+        }else{
+            // we already showed the reminder
             Log.wtf(TAG, "Setup is already done. Business as usual");
         }
         /**** END FIRST TIME SETUP ****/
@@ -245,34 +275,30 @@ public class MainActivity extends AppCompatActivity {
         String fragmentTag = "";
         switch (position) {
             case 0:
-                fragment = new HomeFragment();
-                fragmentTag = navMenuTitles[0];
-                break;
-            case 1:
                 fragment = new NewsFragment();
                 fragmentTag = navMenuTitles[1];
                 break;
-            case 2:
+            case 1:
                 fragment = new InfoSysFragment();
                 fragmentTag = navMenuTitles[2];
                 break;
-            case 3:
+            case 2:
                 fragment = new VorlesungsplanFragment();
                 fragmentTag = navMenuTitles[3];
                 break;
-            case 4:
+            case 3:
                 fragment = new MensaplanFragment();
                 fragmentTag = navMenuTitles[4];
                 break;
-            case 5:
+            case 4:
                 fragment = new MapFragment();
                 fragmentTag = navMenuTitles[5];
                 break;
-            case 6:
+            case 5:
                 fragment = new AboutFragment();
                 fragmentTag = navMenuTitles[6];
                 break;
-            case 7:
+            case 6:
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 break;

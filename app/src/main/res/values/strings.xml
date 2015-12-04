@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="version">0.5.1</string>
+    <string name="version">0.5.2</string>
 
     <string name="app_name">JadeHS-Navigator</string>
-
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
 
     <string name="bez_WHV">Wilhelmshaven</string>
     <string name="bez_ELS">Elsfleth</string>
@@ -25,7 +21,6 @@
     <string name="drawer_close">Slider Menu Closed</string>
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item>HOME</item>
         <item>NEUIGKEITEN</item>
         <item>INFOSYS</item>
         <item>VORLESUNGEN</item>
@@ -36,7 +31,6 @@
     </string-array>
 
     <array name="nav_drawer_icons">
-        <item>@drawable/ic_home_white_24dp</item>
         <item>@drawable/ic_tap_and_play_white_24dp</item>
         <item>@drawable/ic_today_white_24dp</item>
         <item>@drawable/ic_school_white_24dp</item>
@@ -109,11 +103,15 @@
 
     <string name="changelog_text">
         <![CDATA[
+            <b>v0.5.2</b><br /><br />
+            <p>- Home-Seite wurde vorerst entfernt; eine Überarbeitung steht an</p>
+            <p>- Bei Bedarf kann in den Einstellungen ein Starttab gewählt werden, der beim Starten der App geöffnet wird</p>
+            <p>- Diverse kleinere visuelle Anpassungen</p>
+            <br><br>
             <b>v0.5.1</b><br /><br />
             <p>- Diverse Fehlerbehebungen im Vorlesungsplan</p>
             <p>- Der eigene Vorlesungsplan kann nun präferiert werden</p>
             <br><br>
-            <h1>Changelog</h1><br /><br />
             <b>v0.5</b><br /><br />
             <p>- Der eigene Vorlesungsplan ist jetzt vorhanden!</p>
             <p>- Lagepläne für Oldenburg und Elsfleth</p>
@@ -128,10 +126,12 @@
     <!-- Preferences -->
 
     <string name="primary_options">Studienauswahl</string>
+    <string name="secondary_options">Allgemeine Einstellungen</string>
     <string name="more_options">Weitere Optionen</string>
 
     <string name="choose_fb">Wähle deinen Fachbereich</string>
     <string name="choose_sg">Wähle deinen Studiengang</string>
+    <string name="choose_index">Wähle deine Startseite</string>
 
     <string name="preference_reset">Soll die App zurückgesetzt werden?</string>
     <string name="preference_reset_vplan">Soll dein eigener Vorlesungsplan zurückgesetzt werden?</string>
@@ -152,7 +152,7 @@
     <string name="reset_app_summary">Alle Einstellungen und Datensätze löschen</string>
     <string name="reset_vplan">Vorlesungsplan zurücksetzen</string>
     <string name="reset_vplan_summary">Eigenen Vorlesungsplan zurücksetzen</string>
-    <string name="summary_prefer_vplan">Zeige den eigenen Vorlesungsplan anstatt den allgemeinen Vorlesungsplan</string>
+    <string name="summary_prefer_vplan">Zeige zuerst den eigenen Vorlesungsplan anstatt den allgemeinen Vorlesungsplan</string>
     <!--- InfoSys Strings -->
     <string name="infosys_base_url">http://team.jade-hs.de/plan/index.php?action=rss&amp;fb=</string>
 
@@ -186,6 +186,7 @@
     <string name="negative_default">Nein, übernehme Standardeinstellungen</string>
 
     <string name="alert_firsttimesetup">Willkommen zum JadeHS-Navigator\nDa dies dein erster Start der App ist, solltest du ein paar Einstellungen vornehmen, ansonsten werden Standardeinstellungen ausgewählt.\nMöchtest du diese Einstellungen jetzt vornehmen?</string>
+    <string name="alert_feedbackreminder">Vielen Dank für die Nutzung des JadeHS-Navigators. Wir hoffen du bist mit den Funktionen der App zufrieden. Möchtest du die App jetzt bewerten?</string>
 
     <string name="failed_to_open_website">Website konnte nicht geöffnet werden</string>
 
