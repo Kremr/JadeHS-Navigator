@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="version">0.5.2</string>
+    <string name="version">0.5.4</string>
 
     <string name="app_name">JadeHS-Navigator</string>
 
@@ -103,6 +103,13 @@
 
     <string name="changelog_text">
         <![CDATA[
+            <b>v0.5.4</b><br /><br />
+            <p>- Umbenennung des Fachbereichs Bauwesen und Geoinformation in Bauwesen, Geoinformation, Gesundheitstechnologie</p>
+            <p>- gm</p>
+            <br><br>
+            <b>v0.5.3</b><br /><br />
+            <p>- Fehlerbebung beim Abruf des Vorlesungsplans</p>
+            <br><br>
             <b>v0.5.2</b><br /><br />
             <p>- Home-Seite wurde vorerst entfernt; eine Überarbeitung steht an</p>
             <p>- Bei Bedarf kann in den Einstellungen ein Starttab gewählt werden, der beim Starten der App geöffnet wird</p>
@@ -198,7 +205,7 @@
     <string name="strBtnWednesday">Mi</string>
     <string name="strBtnThursday">Do</string>
     <string name="strBtnFriday">Fr</string>
-    <string name="strVPlanBaseURL"><![CDATA[http://team.jade-hs.de/plan/plan.php?action=ipc_schedule&version=1.0&department=]]></string>
+    <string name="strVPlanBaseURL"><![CDATA[http://team.jade-hs.de/plan/index.php?action=ipc_schedule&version=1.0&department=]]></string>
     <string name="strWeekdayMonday">MO</string>
     <string name="strWeekdayTuesday">DI</string>
     <string name="strWeekdayWednesday">MI</string>

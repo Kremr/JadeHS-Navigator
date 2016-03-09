@@ -36,8 +36,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.nineoldandroids.view.ViewHelper;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

@@ -35,7 +35,7 @@ public class Studiengang {
     private ArrayList<StudiengangItem> studiengangList = null;
 
     private String url;
-    private String baseUrl = "http://team.jade-hs.de/plan/plan.php?action=ipc_courses&version=1.1&department=";
+    private String baseUrl = "http://team.jade-hs.de/plan/index.php?action=ipc_courses&version=1.1&department=";
     private int fb;
 
     public Studiengang(Context context, int fb) {
