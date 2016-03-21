@@ -72,41 +72,47 @@ public class MensaplanPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         // Inflate a new layout from our resources
-        mInflater = (LayoutInflater) this.context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        view = mInflater.inflate(R.layout.mensaplan_recycleview, container, false);
-
-        container.addView(view);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-
-        mLayoutManager = new LinearLayoutManager(context);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
         ArrayList<MensaplanMeal> mensaplanMeals = mensaplanData.get(position).getMeals();
+        mInflater = (LayoutInflater) this.context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
 
-        mAdapter = new MensaplanRecycleAdapter(mensaplanMeals);
+        if(mensaplanMeals.isEmpty()) {
+            view = mInflater.inflate(R.layout.mensaplan_emptystate,container,false);
+            container.addView(view);
+        } else {
 
-        List<MensaplanSectionedRecycleAdapter.Section> sections = new ArrayList<>();
+            view = mInflater.inflate(R.layout.mensaplan_recycleview, container, false);
 
-        int sectionStartPosition = 0;
-        int sectionType = 0;
+            container.addView(view);
+            mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
 
-        String [] headerTitles  = context.getResources().getStringArray(R.array.mensaplan_sectionheader);
+            mLayoutManager = new LinearLayoutManager(context);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mAdapter = new MensaplanRecycleAdapter(mensaplanMeals);
 
-        for(MensaplanMeal item: mensaplanMeals) {
-            if(sectionType != item.getType())  {
-                sectionType = item.getType();
-                String sectionTitle = headerTitles[item.getType()-1];
-                sections.add(new MensaplanSectionedRecycleAdapter.Section(sectionStartPosition,sectionTitle));
+            List<MensaplanSectionedRecycleAdapter.Section> sections = new ArrayList<>();
+
+            int sectionStartPosition = 0;
+            int sectionType = 0;
+
+            String [] headerTitles  = context.getResources().getStringArray(R.array.mensaplan_sectionheader);
+
+            for(MensaplanMeal item: mensaplanMeals) {
+                if(sectionType != item.getType())  {
+                    sectionType = item.getType();
+                    String sectionTitle = headerTitles[item.getType()-1];
+                    sections.add(new MensaplanSectionedRecycleAdapter.Section(sectionStartPosition,sectionTitle));
+                }
+                sectionStartPosition++;
             }
-            sectionStartPosition++;
+            MensaplanSectionedRecycleAdapter.Section[] dummy = new MensaplanSectionedRecycleAdapter.Section[sections.size()];
+            MensaplanSectionedRecycleAdapter mSectionedAdapter = new
+                    MensaplanSectionedRecycleAdapter(context,R.layout.mensaplan_sectionheader, R.id.section_text,mAdapter);
+            mSectionedAdapter.setSections(sections.toArray(dummy));
+
+            mRecyclerView.setAdapter(mSectionedAdapter);
+
         }
 
-        MensaplanSectionedRecycleAdapter.Section[] dummy = new MensaplanSectionedRecycleAdapter.Section[sections.size()];
-        MensaplanSectionedRecycleAdapter mSectionedAdapter = new
-                MensaplanSectionedRecycleAdapter(context,R.layout.mensaplan_sectionheader, R.id.section_text,mAdapter);
-        mSectionedAdapter.setSections(sections.toArray(dummy));
-
-        mRecyclerView.setAdapter(mSectionedAdapter);
         return view;
     }
 
