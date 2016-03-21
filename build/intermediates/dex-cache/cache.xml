@@ -2,74 +2,25 @@
 <items version="2" >
 
     <item
-        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.2.0/jars/classes.jar"
-        jumboMode="false"
+        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/instantRunSlicer/debug/jars/1/5/main_sliceb.jar"
+        jumboMode="true"
         revision="21.1.2"
-        sha1="292a9fa091757208efa65e77eef63088247e51f3">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/pre-dexed/debug/classes-aa7f8270f24272453dcaa8c699a35fe837a916d4.jar" />
+        sha1="64de2184a3fb51ac781e81a5ab25306af3c9e0e7">
+        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/dex/debug/folders/1000/5/main_sliceb_3cfd341f953a428cc8bc6839935d68ff611d9737/classes.dex" />
     </item>
     <item
-        jar="/Users/HendrikKremer/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.2.0/support-annotations-23.2.0.jar"
-        jumboMode="false"
+        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/instantRunSlicer/debug/jars/1/5/main_slice.jar"
+        jumboMode="true"
         revision="21.1.2"
-        sha1="c5bf571bb10462bd90e5419ade67793f71acbc87">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/pre-dexed/debug/support-annotations-23.2.0-eb9b1e1ebf6a8f3aaac87d1dbe50d91a480f0dc5.jar" />
+        sha1="230dd2f2c2e6ad336bac89479dadc7666bdc8536">
+        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/dex/debug/folders/1000/5/main_slice_20a26a7eb914fca89491b287aa398c21698dc054/classes.dex" />
     </item>
     <item
-        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.0/jars/classes.jar"
-        jumboMode="false"
+        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/instantRunSlicer/debug/jars/1/1a/dependencies.jar"
+        jumboMode="true"
         revision="21.1.2"
-        sha1="6e3578f92f7462d1a935a1d36173e3bdd1234976">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/pre-dexed/debug/classes-aa77f373fa18def06b9976245df4b2783e16880a.jar" />
-    </item>
-    <item
-        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="8c108c22c99e794eff255bb34d2a461200c4cbb0">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/pre-dexed/debug/classes-160e1d0f0ddf0c5b1a004ed9f3373d0d1381b62f.jar" />
-    </item>
-    <item
-        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/exploded-aar/com.android.support/design/23.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="1aa5b025efe97f5006f5be16d6ca67c6c3c0c0d8">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/pre-dexed/debug/classes-ec63d4be2c424c595af80440c2a060206c05ce0c.jar" />
-    </item>
-    <item
-        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="e5f32fa48a3eb2de0c987025c11b6e3864b634d9">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/pre-dexed/debug/classes-13aebd9c03026b918439d49341266e0c57dcef6b.jar" />
-    </item>
-    <item
-        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.0/jars/libs/internal_impl-23.2.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="6e239441500605809818997dd63b62a947195f8c">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/pre-dexed/debug/internal_impl-23.2.0-7529106652ea72b3305feeedefba472a18f650b7.jar" />
-    </item>
-    <item
-        jar="/Users/HendrikKremer/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/pre-dexed/debug/library-2.4.0-a8313a1a277b04520532101284a10e4ac20be888.jar" />
-    </item>
-    <item
-        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="d4c936aa8c7d2522c82e3f1829c791d9e367f009">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/pre-dexed/debug/classes-897772845cf130b663733ca4e6e4bb8762f37c6e.jar" />
-    </item>
-    <item
-        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="bc599eb9531da9d18bc58ec4eb0b1a1d895f6839">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/pre-dexed/debug/classes-8567e6d78bfe4e7433494ef51c7f597e96a915eb.jar" />
+        sha1="c83f31e9152cfba6c150f63c320a86ca450458ca">
+        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/dex/debug/folders/1000/1a/dependencies_ab5dbd2fc3a786bc1b0fa6e4f476c4bf0f91d0ff/classes.dex" />
     </item>
 
 </items>

@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "de.jadehs.jadehsnavigator"
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 22
         versionCode 14
         versionName "0.5.2"
@@ -24,7 +24,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.2.0'
     //compile 'com.google.android.gms:play-services:7.8+'
-    compile 'it.sephiroth.android.library.imagezoom:imagezoom:+'
+    compile 'it.sephiroth.android.library.imagezoom:imagezoom:2.2.4'
     compile files('libs/jsoup-1.8.3.jar')
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:recyclerview-v7:23.2.0'
