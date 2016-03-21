@@ -35,13 +35,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import de.jadehs.jadehsnavigator.R;
 import de.jadehs.jadehsnavigator.adapter.MensaplanPagerAdapter;
-import de.jadehs.jadehsnavigator.database.DBHelper;
 import de.jadehs.jadehsnavigator.database.MensaplanDayDataSource;
 import de.jadehs.jadehsnavigator.database.MensaplanMealDataSource;
 import de.jadehs.jadehsnavigator.response.MensaPlanAsyncResponse;
@@ -52,56 +52,18 @@ import de.jadehs.jadehsnavigator.view.MensaplanTabLayout;
 
 public class MensaplanFragment extends Fragment implements MensaPlanAsyncResponse{
 
-    private ParseMensaplanTask asyncTask;
-    private ConnectivityManager cm;
-    private NetworkInfo activeNetwork;
     private Preferences preferences;
-    private MensaplanMealDataSource mensaplanMealDataSource;
-    private MensaplanDayDataSource mensaplanDayDataSource;
-    private CalendarHelper calendarWeekHelper = new CalendarHelper();
-
-    private DBHelper dbHelper;
-    private int weekNumber;
     private int week = 0;
-    private boolean nextWeek = false;
-    private boolean mensaplanFirstTime = true;
-    private String[] stringList;
-
-    private MensaplanTabLayout mSlidingTabLayout;
-    private ViewPager mViewPager;
-    private AlertDialog.Builder builder;
-
-    private String [] tmp;
-    private List<String> list;
-    private ArrayList<String> arrayList;
     private ArrayList<ArrayList> mensaplanWeeks;
-    private AlertDialog alert;
-
-    private String iconText;
-    private ArrayAdapter<String> modeAdapter;
-
-    private ListView modeList;
-
-    private boolean needToRefresh= false;
-
+    private final String TAG = "MensaplanFragment";
+    private boolean secondTime = false;
+    private ViewPager mViewPager;
 
     public MensaplanFragment () {
 
     }
 
-    /**
-     * Called when the fragment's activity has been created and this
-     * fragment's view hierarchy instantiated.  It can be used to do final
-     * initialization once these pieces are in place, such as retrieving
-     * views or restoring state.  It is also useful for fragments that use
-     * {@link #setRetainInstance(boolean)} to retain their instance,
-     * as this callback tells the fragment when it is fully associated with
-     * the new activity instance.  This is called after {@link #onCreateView}
-     * and before {@link #onViewStateRestored(Bundle)}.
-     *
-     * @param savedInstanceState If the fragment is being re-created from
-     *                           a previous saved state, this is the state.
-     */
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -112,7 +74,12 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        this.weekNumber = calendarWeekHelper.getWeekNumber();
+        preferences = new Preferences(getActivity().getApplicationContext());
+
+
+
+
+
     }
 
     @Override
@@ -122,45 +89,35 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
             menu.findItem(R.id.action_settings).setVisible(false);
         }
 
-         inflater.inflate(R.menu.fragment_mensaplan, menu);
+        inflater.inflate(R.menu.fragment_mensaplan, menu);
 
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //return super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
-            case R.id.refresh_mensaplan:
 
-                updateMensaplan(true);
+            case R.id.refresh_mensaplan:
+                update(true);
+                mViewPager.getAdapter().notifyDataSetChanged();
                 break;
             case R.id.changeWeek_mensaplan:
-                if (!nextWeek) {
-
-                    nextWeek = true;
-                    this.week = week + 1;
-                    updateMensaplan(false);
-
-                    item.setTitle("Zurück zur aktuellen Woche");
-
-
-                } else {
-                    nextWeek = false;
-                    item.setTitle("Nächste Woche");
-                    this.week = 0;
-                    updateMensaplan(false);
-
+                switch (week) {
+                    case 0:
+                        week = 1;
+                        item.setTitle("Zurück zur aktuellen Woche");
+                        break;
+                    case 1:
+                        week = 0;
+                        item.setTitle("Nächste Woche");
+                        break;
                 }
+                processFinish(mensaplanWeeks);
                 Toast.makeText(getActivity().getApplicationContext(), "Woche gewechselt.", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mensaplan_action_info:
                 showDialog();
-
-
-
-            default:
-                return super.onOptionsItemSelected(item);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -168,18 +125,16 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         return inflater.inflate(R.layout.fragment_mensaplan, container, false);
 
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        updateMensaplan(false);
+        update(false);
         if(!preferences.getBoolean("readInstruction", false)) {
             try {
-                this.builder = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 // don't show this dialog again
                 preferences.save("readInstruction", true);
                 String instructionMsg = String.format(getActivity().getResources().getString(R.string.mensaplan_belehrung), preferences.getLocation());
@@ -197,9 +152,9 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
                                     }
                                 });
 
-                mensaplanFirstTime = false;
 
-                alert = builder.create();
+
+                AlertDialog alert = builder.create();
 
                 alert.setCanceledOnTouchOutside(false);
                 alert.show();
@@ -209,85 +164,103 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
         }
 
     }
-    public void updateMensaplan(Boolean refreshButtonClicked) {
-        this.cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        this.activeNetwork = cm.getActiveNetworkInfo();
-        this.preferences = new Preferences(getActivity().getApplicationContext());
+
+
+    public void update(Boolean refreshButtonClicked) {
+
+
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        CalendarHelper calendarWeekHelper = new CalendarHelper();
+        int weekNumber = calendarWeekHelper.getWeekNumber();
 
 
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        openDatabases();
-        needToRefresh = this.mensaplanDayDataSource.needToRefresh(weekNumber,preferences.getLocation());
+        MensaplanMealDataSource mensaplanMealDataSource = new MensaplanMealDataSource(getActivity().getApplicationContext());
+        MensaplanDayDataSource mensaplanDayDataSource = new MensaplanDayDataSource(getActivity().getApplicationContext());
 
-        if ((isConnected && refreshButtonClicked
-                || isConnected && needToRefresh))
+        try {
+            mensaplanDayDataSource.open();
+            mensaplanMealDataSource.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "Fehler: Zugriff auf Datenbank nicht möglich.", Toast.LENGTH_SHORT).show();
+        }
+
+        Boolean needToRefresh = mensaplanDayDataSource.needToRefresh(weekNumber,preferences.getLocation());
+        if (isConnected && (needToRefresh || refreshButtonClicked))
         {
 
             if(refreshButtonClicked || needToRefresh){
                 mensaplanDayDataSource.deleteMensaplanDay();
                 mensaplanMealDataSource.deleteMensaplanDay();
             }
+            ParseMensaplanTask asyncTask = new ParseMensaplanTask(getActivity());
+            asyncTask.delegate = this;
+            asyncTask.execute();
 
-            this.asyncTask = new ParseMensaplanTask(getActivity());
-            this.asyncTask.delegate = this;
-            this.asyncTask.execute();
         } else if (!needToRefresh) {
             try {
+                Log.wtf(TAG, "update: Aus Datenbank abrufen.");
                 // Datenquelle öffnen und Einträge abrufen
-                mensaplanWeeks= this.mensaplanDayDataSource.getMensaplanDays(preferences.getLocation());
-
-                try{
-                    mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                mensaplanWeeks= mensaplanDayDataSource.getMensaplanDays(preferences.getLocation());
                 processFinish(mensaplanWeeks);
+
 
             } catch (Exception ex) {
                 ex.printStackTrace();
                 Toast.makeText(getActivity(), "Fehler beim Abrufen des Mensaplans", Toast.LENGTH_LONG).show();
             }
-            finally {
-                closeDatabases();
-
-
-            }
         } else {
-            closeDatabases();
             Toast.makeText(getActivity(), "Keine Internetverbindung vorhanden, Daten konnten nicht aktualisiert werden.", Toast.LENGTH_LONG).show();
             getActivity().findViewById(R.id.progressMensaplan).setVisibility(View.GONE);
             getActivity().findViewById(R.id.errorOverlay).setVisibility(View.VISIBLE);
+
         }
+        mensaplanMealDataSource.close();
+        mensaplanDayDataSource.close();
+
     }
 
     @Override
     public void processFinish(ArrayList<ArrayList> items) {
+
+        mensaplanWeeks = items;
+
+
+        CalendarHelper calendarWeekHelper = new CalendarHelper();
         try{
-            mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
             getActivity().findViewById(R.id.progressMensaplan).setVisibility(View.GONE);
-            mViewPager.setAdapter(new MensaplanPagerAdapter(getActivity(), items, this.week));
+            mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
+            MensaplanPagerAdapter mensaplanPagerAdapter = new MensaplanPagerAdapter(getActivity(), items.get(week));
+            if(secondTime) {
+                getView();
+
+            }
+            mViewPager.setAdapter(mensaplanPagerAdapter);
             if(week!=1) {
                 mViewPager.setCurrentItem(calendarWeekHelper.getDay());
             }
-            mSlidingTabLayout = (MensaplanTabLayout) getActivity().findViewById(R.id.sliding_tabs);
+            MensaplanTabLayout mSlidingTabLayout =  (MensaplanTabLayout) getActivity().findViewById(R.id.sliding_tabs);
             mSlidingTabLayout.setViewPager(mViewPager);
-
         } catch (Exception e) {
             e.printStackTrace();
-            Log.wtf("processFinish","Aktualisierung unterbrochen, View gewechselt");
+            Log.wtf("processFinish", "Aktualisierung unterbrochen, View gewechselt");
         }
-
-
-
-
+        secondTime = true;
     }
+
+
     public void showDialog () {
-        this.builder = new AlertDialog.Builder(getActivity());
-        this.stringList  = getActivity().getResources().getStringArray(R.array.mensaplan_additivies);
+        String [] tmp;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        String iconText = "";
+        String [] stringList  = getActivity().getResources().getStringArray(R.array.mensaplan_additivies);
 
         // WorkAround wegen eines Bugs im Android XML-Parser https://code.google.com/p/androidsvg/issues/detail?id=29
-        list = Arrays.asList(stringList);
-        arrayList = new ArrayList<>(list);
+        List <String> list = Arrays.asList(stringList);
+        ArrayList<String> arrayList = new ArrayList<>(list);
         for(int i = 0; i<arrayList.size(); i++) {
             String zusatzstoff = arrayList.get(i);
             //TODO vegan# und co. auslagern
@@ -333,9 +306,9 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
         stringList = arrayList.toArray(new String[list.size()]);
 
 
-        modeList = new ListView(getActivity().getApplicationContext());
+        ListView modeList = new ListView(getActivity().getApplicationContext());
         modeList.setVerticalScrollBarEnabled(true);
-        modeAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.mensaplan_dialog_list_item, R.id.txtMensaplan_dialog_list_item, stringList);
+        ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.mensaplan_dialog_list_item, R.id.txtMensaplan_dialog_list_item, stringList);
         modeList.setAdapter(modeAdapter);
 
         builder.setView(modeList);
@@ -348,26 +321,8 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
 
         });
         builder.setCancelable(true);
-        final AlertDialog dialog = builder.create();
+        AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-    public void openDatabases () {
-        try {
-            this.mensaplanMealDataSource = new MensaplanMealDataSource(getActivity().getApplicationContext());
-            this.mensaplanMealDataSource.open();
-            this.mensaplanDayDataSource = new MensaplanDayDataSource(getActivity().getApplicationContext());
-            this.mensaplanDayDataSource.open();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), "Fehler: Zugriff auf Datenbank nicht möglich.", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-    public void closeDatabases (){
-        this.mensaplanMealDataSource.close();
-        this.mensaplanDayDataSource.close();
-
-    }
 }

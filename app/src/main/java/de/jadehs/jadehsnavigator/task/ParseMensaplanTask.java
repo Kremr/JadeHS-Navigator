@@ -18,6 +18,7 @@ package de.jadehs.jadehsnavigator.task;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import de.jadehs.jadehsnavigator.response.MensaPlanAsyncResponse;
 
 public class ParseMensaplanTask extends AsyncTask<Void, Void, ArrayList<ArrayList>> {
     public MensaPlanAsyncResponse delegate=null;
+    private final String TAG = "ParseMensaplanTask";
 
     private Activity activity = null;
 
@@ -50,6 +52,7 @@ public class ParseMensaplanTask extends AsyncTask<Void, Void, ArrayList<ArrayLis
 
         this.mensaplan = new Mensaplan(this.activity.getApplicationContext());
         this.gerichte = this.mensaplan.parseMensaplan();
+        Log.wtf(TAG,""+gerichte.size());
         return gerichte;
     }
 

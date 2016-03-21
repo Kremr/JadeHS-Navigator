@@ -232,6 +232,18 @@
     <string name="mensaplan_url_els">mensa-elsfleth.html</string>
     <string name="mensaplan_url_olb">mensa-ofener-strasse.html</string>
 
+
+
+    <string-array name="mensaplan_sectionheader">
+        <item>Hauptgerichte</item>
+        <item>Zusatzessen</item>
+        <item>Beilagen</item>
+        <item>Gemüse</item>
+        <item>Salate</item>
+        <item>Suppen</item>
+        <item>Desserts</item>
+    </string-array>
+
     <string-array name="mensaplan_additivies">
         <item><b>Symbole</b></item>
         <item>lamm#: Lammfleisch</item>

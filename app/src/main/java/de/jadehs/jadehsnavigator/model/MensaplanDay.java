@@ -18,7 +18,7 @@ package de.jadehs.jadehsnavigator.model;
 
 import java.util.ArrayList;
 
-public class MensaplanDay {
+public class MensaplanDay extends ArrayList<MensaplanMeal>{
     private long id;
     private int day;
     private int weekNumber;
@@ -32,6 +32,7 @@ public class MensaplanDay {
 
     public MensaplanDay () {
     }
+
     public MensaplanDay( int day, int weekNumber, int week, String location, String created) {
         this.day = day;
         this.weekNumber = weekNumber;
@@ -39,6 +40,7 @@ public class MensaplanDay {
         this.location = location;
         this.created = created;
     }
+
     public void addToMeals(MensaplanMeal meal){
         this.meals.add(meal);
     }
@@ -97,5 +99,17 @@ public class MensaplanDay {
 
     public void setCreated(String created) {
         this.created = created;
+    }
+
+    public int getTypecount() {
+        int count = 0;
+        int tmpType = 0;
+        for(MensaplanMeal meal : meals) {
+            if(meal.getType() != tmpType) {
+                count ++;
+                tmpType = meal.getType();
+            }
+        }
+        return count;
     }
 }
