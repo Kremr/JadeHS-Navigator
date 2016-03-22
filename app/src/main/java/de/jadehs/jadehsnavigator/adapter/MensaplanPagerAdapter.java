@@ -1,7 +1,9 @@
 package de.jadehs.jadehsnavigator.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -79,11 +81,29 @@ public class MensaplanPagerAdapter extends PagerAdapter {
             view = mInflater.inflate(R.layout.mensaplan_emptystate,container,false);
             container.addView(view);
         } else {
-
+            final SwipeRefreshLayout swipeRefreshLayout= (SwipeRefreshLayout) container.getParent();
             view = mInflater.inflate(R.layout.mensaplan_recycleview, container, false);
 
             container.addView(view);
             mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+            mRecyclerView.setHasFixedSize(true);
+
+            mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                private int overallYScrol = 0;
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    //overallYScrol = 0 gibt an, dass die Recycleview bis nach ganz oben gescrolled ist und somit
+                    // der swipeRefresh aktiviert werden kann.
+                    overallYScrol = overallYScrol + dy;
+                    if(overallYScrol == 0) {
+                        swipeRefreshLayout.setEnabled(true);
+                    } else {
+                        swipeRefreshLayout.setEnabled(false);
+                    }
+                }
+            });
+
 
             mLayoutManager = new LinearLayoutManager(context);
             mRecyclerView.setLayoutManager(mLayoutManager);

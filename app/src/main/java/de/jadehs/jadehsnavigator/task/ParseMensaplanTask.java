@@ -59,7 +59,7 @@ public class ParseMensaplanTask extends AsyncTask<Void, Void, ArrayList<ArrayLis
     @Override
     protected void onPreExecute() {
         try {
-            activity.findViewById(R.id.progressMensaplan).setVisibility(View.VISIBLE);
+
         }catch (Exception e){
             e.printStackTrace();
         }

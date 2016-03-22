@@ -42,16 +42,23 @@ public class Mensaplan  {
         String location = preference.getLocation();
         String iconText = "";
 
+
+
         Document doc = connect(location);
+        if(doc == null) return null;
         Element table;
         Elements tables = doc.select("table[summary^=Wochenplan]");
+
 
         MensaplanDayDataSource mensaplanDayDataSource = new MensaplanDayDataSource(context);
         MensaplanMealDataSource mensaplanMealDataSource = new MensaplanMealDataSource(context);
         MensaplanMeal mensaplanMeal;
         MensaplanDay mensaplanDay;
 
+
         ArrayList<ArrayList> mensaplanArrayList = new ArrayList<>();
+        ArrayList<MensaplanDay> mensaplanDaysCurrentWeek = new ArrayList<>();
+        ArrayList<MensaplanDay> mensaplanDaysNextWeek = new ArrayList<>();
 
         try {
             mensaplanDayDataSource.open();
@@ -61,27 +68,25 @@ public class Mensaplan  {
             //tr:eq(0 = Tag; 1 = Hauptgerichte; 2 = Zusatzessen/Pasta; 3 = Beilagen; 4 = Gemüse; 5 = Salate; 6 = Suppen; 7 = Desserts)
             //td:eq(1 = Montag; 2 = Dienstag; 3 = Mittwoch; 4 = Donnerstag; 5 = Freitag)
 
-            ArrayList<MensaplanDay> mensaplanDaysCurrentWeek = new ArrayList<>();
-            ArrayList<MensaplanDay> mensaplanDaysNextWeek = new ArrayList<>();
 
-            for(int it = 0; it<2; it++) {
+            for (int it = 0; it < 2; it++) {
                 table = tables.get(it);
 
                 for (int x = 1; x <= 5; x++) {
                     if (it == 0) {
-                        mensaplanDay = new MensaplanDay(x, calendarWeekHelper.getWeekNumber()+it, it, location, calendarWeekHelper.getDateRightNow(false));
+                        mensaplanDay = new MensaplanDay(x, calendarWeekHelper.getWeekNumber() + it, it, location, calendarWeekHelper.getDateRightNow(false));
                         insertID = mensaplanDayDataSource.createMensaplanDAY(mensaplanDay);
                         mensaplanDaysCurrentWeek.add(mensaplanDay);
                         mensaplanDay.setId(insertID);
 
                     } else {
-                        mensaplanDay = new MensaplanDay(x, calendarWeekHelper.getWeekNumber()+it, it, location, calendarWeekHelper.getDateRightNow(false));
+                        mensaplanDay = new MensaplanDay(x, calendarWeekHelper.getWeekNumber() + it, it, location, calendarWeekHelper.getDateRightNow(false));
                         insertID = mensaplanDayDataSource.createMensaplanDAY(mensaplanDay);
                         mensaplanDaysNextWeek.add(mensaplanDay);
                         mensaplanDay.setId(insertID);
                     }
                 }
-                int elems =(doc.select("table[summary^=Wochenplan] > tbody > tr").size())/tables.size();
+                int elems = (doc.select("table[summary^=Wochenplan] > tbody > tr").size()) / tables.size();
 
                 //int i -> Tabellen Zeile
                 //int j -> Tabellen Spalte
@@ -91,20 +96,20 @@ public class Mensaplan  {
                     Elements tableRows = table.select("tr:eq(" + i + ")");
                     // Iteration der Tage
                     for (int j = 0; j <= 5; j++) {
-                        if(j==0) {
-                            priceText= parsePrice(tableRows.select("td:eq("+ j +")").text(),pattern);
+                        if (j == 0) {
+                            priceText = parsePrice(tableRows.select("td:eq(" + j + ")").text(), pattern);
                         } else {
                             Elements mealsDay = tableRows.select("td:eq(" + j + ") .speise_eintrag");
 
                             // Iteration eines TDs/Divs
-                            int breakPoint=0;
-                            if(mealsDay.size()==2) {
+                            int breakPoint = 0;
+                            if (mealsDay.size() == 2) {
                                 breakPoint = 1;
                             }
 
-                            for (int iter=0;iter<=breakPoint;iter++) {
+                            for (int iter = 0; iter <= breakPoint; iter++) {
                                 String mealText = "";
-                                if(mealsDay.size() != 0) {
+                                if (mealsDay.size() != 0) {
                                     Element meal = mealsDay.get(iter);
                                     mealText = meal.text();
                                     Elements icons = meal.select("img[title]");

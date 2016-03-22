@@ -24,6 +24,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,6 +54,7 @@ import de.jadehs.jadehsnavigator.view.MensaplanTabLayout;
 public class MensaplanFragment extends Fragment implements MensaPlanAsyncResponse{
 
     private Preferences preferences;
+    private SwipeRefreshLayout swipeLayout;
     private int week = 0;
     private ArrayList<ArrayList> mensaplanWeeks;
     private final String TAG = "MensaplanFragment";
@@ -80,6 +82,7 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
 
 
 
+
     }
 
     @Override
@@ -98,6 +101,7 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
         switch (item.getItemId()) {
 
             case R.id.refresh_mensaplan:
+                swipeLayout.setRefreshing(true);
                 update(true);
                 mViewPager.getAdapter().notifyDataSetChanged();
                 break;
@@ -125,13 +129,23 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_mensaplan, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_mensaplan, container, false);
+        swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeMensaplan);
+        swipeLayout.setColorSchemeColors(R.color.swipe_color_1, R.color.swipe_color_2, R.color.swipe_color_3);
+        return rootView;
 
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         update(false);
+         /* Set up a Refreshlistener on the swipelayout*/
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                update(true);
+            }
+        });
         if(!preferences.getBoolean("readInstruction", false)) {
             try {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -214,7 +228,7 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
             }
         } else {
             Toast.makeText(getActivity(), "Keine Internetverbindung vorhanden, Daten konnten nicht aktualisiert werden.", Toast.LENGTH_LONG).show();
-            getActivity().findViewById(R.id.progressMensaplan).setVisibility(View.GONE);
+           // getActivity().findViewById(R.id.progressMensaplan).setVisibility(View.GONE);
             getActivity().findViewById(R.id.errorOverlay).setVisibility(View.VISIBLE);
 
         }
@@ -231,13 +245,10 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
 
         CalendarHelper calendarWeekHelper = new CalendarHelper();
         try{
-            getActivity().findViewById(R.id.progressMensaplan).setVisibility(View.GONE);
+            //getActivity().findViewById(R.id.progressMensaplan).setVisibility(View.GONE);
+            //getActivity().findViewById(R.id.swipeMensaplan).setVisibility(View.INVISIBLE);
             mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
             MensaplanPagerAdapter mensaplanPagerAdapter = new MensaplanPagerAdapter(getActivity(), items.get(week));
-            if(secondTime) {
-                getView();
-
-            }
             mViewPager.setAdapter(mensaplanPagerAdapter);
             if(week!=1) {
                 mViewPager.setCurrentItem(calendarWeekHelper.getDay());
@@ -248,6 +259,7 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
             e.printStackTrace();
             Log.wtf("processFinish", "Aktualisierung unterbrochen, View gewechselt");
         }
+        swipeLayout.setRefreshing(false);
         secondTime = true;
     }
 

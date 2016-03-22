@@ -1,26 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" >
-
-    <item
-        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/instantRunSlicer/debug/jars/1/5/main_sliceb.jar"
-        jumboMode="true"
-        revision="21.1.2"
-        sha1="d4e288e8a1fad29d2057f5d9c58c925d1e03d374">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/dex/debug/folders/1000/5/main_sliceb_3cfd341f953a428cc8bc6839935d68ff611d9737/classes.dex" />
-    </item>
-    <item
-        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/instantRunSlicer/debug/jars/1/5/main_slice.jar"
-        jumboMode="true"
-        revision="21.1.2"
-        sha1="87a706606084bf4ba3c46b86037f013e50e1f283">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/dex/debug/folders/1000/5/main_slice_20a26a7eb914fca89491b287aa398c21698dc054/classes.dex" />
-    </item>
-    <item
-        jar="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/instantRunSlicer/debug/jars/1/1a/dependencies.jar"
-        jumboMode="true"
-        revision="21.1.2"
-        sha1="2d5a0f81fec7b82e830d3a5e27348fa0ad0e65b5">
-        <dex dex="/Users/HendrikKremer/AndroidStudioProjects/Mensa/app/build/intermediates/transforms/dex/debug/folders/1000/1a/dependencies_ab5dbd2fc3a786bc1b0fa6e4f476c4bf0f91d0ff/classes.dex" />
-    </item>
-
-</items>
+<items version="2" />
