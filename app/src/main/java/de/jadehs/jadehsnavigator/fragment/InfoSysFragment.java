@@ -68,7 +68,6 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
         /* Sets up SwipeRefreshLayout */
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeInfoSys);
         swipeLayout.setColorSchemeColors(R.color.swipe_color_1, R.color.swipe_color_2, R.color.swipe_color_3);
-
         return rootView;
     }
 
@@ -97,7 +96,7 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh_infosys:
-
+                swipeLayout.setRefreshing(true);
                 updateInfoSys(false);
                 break;
             default:
@@ -110,6 +109,7 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
      * Initial load of the InfoSys. This will try to load a number of InfoSys entries
      */
     public void initializeInfoSys(){
+        swipeLayout.setRefreshing(true);
         Log.wtf(TAG, "Starting initializeInfoSys");
         try{
             /* Open datasource and create View */
@@ -140,6 +140,7 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
      * @param isSwipeRefresh
      */
     public void updateInfoSys(boolean isSwipeRefresh) {
+        swipeLayout.setRefreshing(true);
         Log.wtf(TAG, "Starting updateInfoSys");
         this.preferences = new Preferences(getActivity().getApplicationContext());
 
@@ -160,14 +161,12 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
         }else{
             txtLastUpdate.setText("Um neue Einträge abzurufen, bitte Internetverbindung herstellen");
 
-            swipeLayout.setRefreshing(false);
+
         }
     }
 
     public void processFinish(ArrayList<InfoSysItem> items, boolean isSwipeRefresh) {
-        if(isSwipeRefresh){
-            swipeLayout.setRefreshing(false);
-        }
+
         processFinish(items);
     }
 
@@ -185,6 +184,7 @@ public class InfoSysFragment extends Fragment implements InfoSysAsyncResponse {
             }
             TextView txtLastUpdate = (TextView) getActivity().findViewById(R.id.txtLastUpdate);
             txtLastUpdate.setText("Letzte Aktualisierung: " + calendarHelper.getDateRightNow(true));
+            swipeLayout.setRefreshing(false);
         }catch (Exception ex){
             Log.wtf(TAG,"ERROR",ex);
         }

@@ -32,6 +32,7 @@ public class Mensaplan  {
     }
 
     public ArrayList<ArrayList> parseMensaplan(){
+
         Long insertID;
 
         Preferences preference = new Preferences(context);
@@ -159,6 +160,10 @@ public class Mensaplan  {
             Log.wtf(TAG,"Methode: parseMensaplan",e);
 
         }
+        finally {
+            mensaplanDayDataSource.close();
+            mensaplanMealDataSource.close();
+        }
         Log.wtf(TAG,"parsing done");
         return mensaplanArrayList;
     }
@@ -187,7 +192,7 @@ public class Mensaplan  {
                     url = url+ context.getString(R.string.mensaplan_url_olb);
                     break;
             }
-            doc = Jsoup.connect(url).timeout(5000).get();
+            doc = Jsoup.connect(url).timeout(50000).get();
         } catch (SocketTimeoutException ex){
             Log.wtf("Connection:", "Timeout.",ex);
         } catch (IOException ex) {

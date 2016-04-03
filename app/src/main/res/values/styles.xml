@@ -12,6 +12,7 @@
         <item name="actionBarStyle">@style/JHSNAVTheme.ActionBar</item>
         <item name="drawerArrowStyle">@style/JHSNAVTheme.Drawer</item>
         <item name="colorPrimary">@color/jadehs_white</item>
+        <item name="colorAccent">@color/jadehs_red</item>
     </style>
 
     <style name="JHSNAVTheme.ActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">

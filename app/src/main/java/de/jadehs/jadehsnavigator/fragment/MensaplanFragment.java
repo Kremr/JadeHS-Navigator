@@ -16,6 +16,8 @@
  */
 package de.jadehs.jadehsnavigator.fragment;
 
+
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
@@ -23,8 +25,11 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,7 +54,6 @@ import de.jadehs.jadehsnavigator.response.MensaPlanAsyncResponse;
 import de.jadehs.jadehsnavigator.task.ParseMensaplanTask;
 import de.jadehs.jadehsnavigator.util.CalendarHelper;
 import de.jadehs.jadehsnavigator.util.Preferences;
-import de.jadehs.jadehsnavigator.view.MensaplanTabLayout;
 
 public class MensaplanFragment extends Fragment implements MensaPlanAsyncResponse{
 
@@ -60,6 +64,7 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
     private final String TAG = "MensaplanFragment";
     private boolean secondTime = false;
     private ViewPager mViewPager;
+
 
     public MensaplanFragment () {
 
@@ -74,9 +79,13 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         preferences = new Preferences(getActivity().getApplicationContext());
+
+
+
 
 
 
@@ -103,7 +112,6 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
             case R.id.refresh_mensaplan:
                 swipeLayout.setRefreshing(true);
                 update(true);
-                mViewPager.getAdapter().notifyDataSetChanged();
                 break;
             case R.id.changeWeek_mensaplan:
                 switch (week) {
@@ -132,6 +140,7 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
         View rootView = inflater.inflate(R.layout.fragment_mensaplan, container, false);
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeMensaplan);
         swipeLayout.setColorSchemeColors(R.color.swipe_color_1, R.color.swipe_color_2, R.color.swipe_color_3);
+
         return rootView;
 
     }
@@ -181,7 +190,7 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
 
 
     public void update(Boolean refreshButtonClicked) {
-
+        swipeLayout.setRefreshing(true);
 
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -253,8 +262,11 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
             if(week!=1) {
                 mViewPager.setCurrentItem(calendarWeekHelper.getDay());
             }
-            MensaplanTabLayout mSlidingTabLayout =  (MensaplanTabLayout) getActivity().findViewById(R.id.sliding_tabs);
-            mSlidingTabLayout.setViewPager(mViewPager);
+
+
+            //mTabLayout.setTabTextColors(R.color.white,R.color.list_divider);
+            TabLayout mTabLayout    = (TabLayout) getActivity().findViewById(R.id.tabs);
+            mTabLayout.setupWithViewPager(mViewPager);
         } catch (Exception e) {
             e.printStackTrace();
             Log.wtf("processFinish", "Aktualisierung unterbrochen, View gewechselt");
@@ -320,7 +332,7 @@ public class MensaplanFragment extends Fragment implements MensaPlanAsyncRespons
 
         ListView modeList = new ListView(getActivity().getApplicationContext());
         modeList.setVerticalScrollBarEnabled(true);
-        ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(), R.layout.mensaplan_dialog_list_item, R.id.txtMensaplan_dialog_list_item, stringList);
+        ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(),R.layout.mensaplan_dialog_list_item,R.id.txtMensaplan_dialog_list_item, stringList);
         modeList.setAdapter(modeAdapter);
 
         builder.setView(modeList);

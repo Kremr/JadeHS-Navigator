@@ -2,13 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
-    <de.jadehs.jadehsnavigator.view.MensaplanTabLayout
-        android:id="@+id/sliding_tabs"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+
+        app:tabMode="fixed"
+        app:tabGravity="fill" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -20,6 +25,7 @@
         android:background="#ffffff"
         android:layout_below="@+id/progressContainer"
         android:layout_above="@+id/relativeLayout">
+
 
         <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

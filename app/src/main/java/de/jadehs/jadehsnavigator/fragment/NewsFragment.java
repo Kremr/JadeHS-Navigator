@@ -21,6 +21,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +30,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,13 +43,10 @@ import java.util.Comparator;
 import de.jadehs.jadehsnavigator.R;
 import de.jadehs.jadehsnavigator.adapter.NewsPagerAdapter;
 import de.jadehs.jadehsnavigator.database.NewsItemDataSource;
-import de.jadehs.jadehsnavigator.model.InfoSysItem;
 import de.jadehs.jadehsnavigator.model.RSSItem;
 import de.jadehs.jadehsnavigator.model.RSSOrigin;
 import de.jadehs.jadehsnavigator.response.RSSAsyncResponse;
 import de.jadehs.jadehsnavigator.task.ParseRSSTask;
-import de.jadehs.jadehsnavigator.util.Preferences;
-import de.jadehs.jadehsnavigator.view.NewsTabLayout;
 
 /**
  * Created by re1015 on 12.08.2015.
@@ -57,7 +54,7 @@ import de.jadehs.jadehsnavigator.view.NewsTabLayout;
 public class NewsFragment extends Fragment implements RSSAsyncResponse {
     final String TAG = "NewsFragment";
 
-    private NewsTabLayout mSlidingTabLayout;
+
     private ViewPager mViewPager;
     private NewsItemDataSource datasource;
 
@@ -170,8 +167,9 @@ public class NewsFragment extends Fragment implements RSSAsyncResponse {
             getActivity().findViewById(R.id.progressNews).setVisibility(View.GONE);
             mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
             mViewPager.setAdapter(new NewsPagerAdapter(getActivity(), items));
-            mSlidingTabLayout = (NewsTabLayout) getActivity().findViewById(R.id.sliding_tabs);
-            mSlidingTabLayout.setViewPager(mViewPager);
+            TabLayout mTabLayout    = (TabLayout) getActivity().findViewById(R.id.news_tabs);
+
+            mTabLayout.setupWithViewPager(mViewPager);
         }catch (Exception ex){
             Log.wtf(TAG, "ProcessFinish() failed", ex);
         }

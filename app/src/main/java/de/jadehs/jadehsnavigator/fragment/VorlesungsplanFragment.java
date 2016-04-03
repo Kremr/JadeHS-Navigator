@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,17 +33,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import de.jadehs.jadehsnavigator.R;
-import de.jadehs.jadehsnavigator.adapter.VPlanAdapter;
 import de.jadehs.jadehsnavigator.adapter.VPlanPagerAdapter;
 import de.jadehs.jadehsnavigator.database.CustomVPlanDataSource;
 import de.jadehs.jadehsnavigator.database.VPlanItemDataSource;
@@ -51,7 +48,6 @@ import de.jadehs.jadehsnavigator.response.VPlanAsyncResponse;
 import de.jadehs.jadehsnavigator.task.ParseVPlanTask;
 import de.jadehs.jadehsnavigator.util.CalendarHelper;
 import de.jadehs.jadehsnavigator.util.Preferences;
-import de.jadehs.jadehsnavigator.view.VPlanTabLayout;
 
 public class VorlesungsplanFragment extends Fragment implements VPlanAsyncResponse {
     private final String TAG = "VorlesungsplanFragment";
@@ -69,7 +65,6 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
     private String weekOfYear;
 
     private ViewPager viewpager;
-    private VPlanTabLayout vPlanTabLayout;
     private CalendarHelper calendarHelper = new CalendarHelper();
 
     // Konstruktor
@@ -268,8 +263,9 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
                 viewpager.setCurrentItem(calendarHelper.getDay());
                 viewpager.setOffscreenPageLimit(5);
 
-                vPlanTabLayout = (VPlanTabLayout) getActivity().findViewById(R.id.vplan_sliding_tabs);
-                vPlanTabLayout.setmViewPager(viewpager);
+                TabLayout mTabLayout    = (TabLayout) getActivity().findViewById(R.id.vplan_tabs);
+
+                mTabLayout.setupWithViewPager(viewpager);
 
                 this.datasource.close();
             } else
@@ -304,8 +300,9 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
                 viewpager.setAdapter(vPlanPagerAdapter);
                 viewpager.setCurrentItem(calendarHelper.getDay());
 
-                vPlanTabLayout = (VPlanTabLayout) getActivity().findViewById(R.id.vplan_sliding_tabs);
-                vPlanTabLayout.setmViewPager(viewpager);
+                TabLayout mTabLayout    = (TabLayout) getActivity().findViewById(R.id.vplan_tabs);
+
+                mTabLayout.setupWithViewPager(viewpager);
 
                 this.custom_vplan_datasource.close();
             } else
@@ -366,8 +363,9 @@ public class VorlesungsplanFragment extends Fragment implements VPlanAsyncRespon
             if (calendarHelper.getWeekNumber() == Integer.parseInt(weekOfYear))
                 viewpager.setCurrentItem(calendarHelper.getDay());
 
-            vPlanTabLayout = (VPlanTabLayout) getActivity().findViewById(R.id.vplan_sliding_tabs);
-            vPlanTabLayout.setmViewPager(viewpager);
+            TabLayout mTabLayout    = (TabLayout) getActivity().findViewById(R.id.vplan_tabs);
+
+            mTabLayout.setupWithViewPager(viewpager);
 
 
             getActivity().findViewById(R.id.progressVPlan).setVisibility(View.GONE);
